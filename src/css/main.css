@@ -1,0 +1,71 @@
+body {
+    background: aquamarine;
+    font-family: SansSerif, sans-serif;
+    padding: 0;
+    margin: 0;
+}
+
+footer {
+    background: lightsteelblue;
+    margin: 0;
+    padding: 1%;
+    display: block;
+    text-align: center;
+}
+
+header {
+    background: lightsteelblue;
+    margin: 0;
+    padding: 0;
+    display: block;
+    text-align: center;
+}
+
+header ul{
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+header ul li{
+    display: inline-block;
+    border: 1px black solid;
+    border-right: none;
+    width: 32.8%;
+    height: 100%;
+}
+
+header ul li a{
+    display: block;
+    padding: 1%;
+    font-size: 23px;
+    text-align: center;
+    text-decoration-line: none;
+    color: darkblue;
+}
+
+header ul li a:hover{
+    background: darkblue;
+    color: yellow;
+}
+
+section{
+    padding: 2%;
+    color: #555555;
+}
+
+h1{
+    text-align: center;
+}
+
+figure figcaption{
+    text-align: center;
+    font-style: italic;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
