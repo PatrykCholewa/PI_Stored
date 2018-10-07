@@ -2,7 +2,7 @@ from werkzeug.wrappers import Request, Response
 
 
 def index(request):
-    file = open('index.html', encoding='utf-8')
+    file = open("index.html", "rb")
     response = Response(file)
     response.content_language = "en"
     response.status = '200 OK'
@@ -12,7 +12,7 @@ def index(request):
 
 
 def css(request):
-    file = open(request.path[1:], encoding='utf-8')
+    file = open(request.path[1:], "rb")
     response = Response(file)
     response.status = '200 OK'
     response.status_code = 200
@@ -20,19 +20,9 @@ def css(request):
     return response
 
 
-def img(request):
+def other(request):
     file = open(request.path[1:], "rb")
     response = Response(file)
-    response.status = '200 OK'
-    response.status_code = 200
-    response.content_type = request.content_type
-    return response
-
-
-def other(request):
-    file = open(request.path[1:], encoding='utf-8')
-    response = Response(file)
-    response.content_language = "en"
     response.status = '200 OK'
     response.status_code = 200
     response.content_type = request.content_type
@@ -48,9 +38,6 @@ def application(request):
 
         if '/css/' in request.path:
             return css(request)
-
-        if '/img/' in request.path:
-            return img(request)
 
         return other(request)
 
