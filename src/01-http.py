@@ -1,5 +1,4 @@
 from werkzeug.wrappers import Request, Response
-import matplotlib.image as imgread
 
 
 def index(request):
@@ -8,18 +7,13 @@ def index(request):
     response.content_language = "en"
     response.status = '200 OK'
     response.status_code = 200
-    if request.content_type == 'text/html':
-        response.content_type = 'text/html; charset=utf-8'
-    else:
-        response.content_type = 'text/plain; charset=utf-8'
-
+    response.content_type = request.content_type
     return response
 
 
 def css(request):
     file = open(request.path[1:], encoding='utf-8')
     response = Response(file)
-    response.content_language = "en"
     response.status = '200 OK'
     response.status_code = 200
     response.content_type = 'text/css; charset=utf-8'
@@ -27,17 +21,16 @@ def css(request):
 
 
 def img(request):
-    file = imgread.imread(request.path[1:], 'png')
+    file = open(request.path[1:], "rb")
     response = Response(file)
-    response.content_language = "en"
     response.status = '200 OK'
     response.status_code = 200
-    response.content_type = "img/png"
+    response.content_type = request.content_type
     return response
 
 
 def other(request):
-    file = open('index.html', encoding='utf-8').read()
+    file = open(request.path[1:], encoding='utf-8')
     response = Response(file)
     response.content_language = "en"
     response.status = '200 OK'
