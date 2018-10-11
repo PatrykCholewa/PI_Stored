@@ -58,9 +58,14 @@ h1{
     text-align: center;
 }
 
-figure figcaption{
-    text-align: center;
-    font-style: italic;
+form ul li label {
+    width: 100px;
+    display: inline-block;
+}
+
+form ul li input {
+    width: 200px;
+    display: inline-block;
 }
 
 .center {

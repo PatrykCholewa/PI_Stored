@@ -2,24 +2,71 @@
 <html lang="en">
 
 <head>
-  <meta charset="utf-8">
-  <meta name="description" content="Project for university">
-  <meta name="keywords" content="HTML, CSS">
-  <meta name="author" content="Patryk Cholewa">
-  <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
-  <link rel="stylesheet" type="text/css" href="css/main.css">
-  <title>PI</title>
+    <meta charset="utf-8">
+    <meta name="description" content="Project for university">
+    <meta name="keywords" content="HTML, CSS">
+    <meta name="author" content="Patryk Cholewa">
+    <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
+    <link rel="stylesheet" type="text/css" href="css/main.css">
+    <script src="js/main.js" defer></script>
+    <title>PI</title>
 </head>
 
 <body>
 
 <main>
     <section>
-        <form method="POST" action="http://edi.iem.pw.edu.pl/chaberb/register/user/">
+        <form method="POST"
+              action="http://edi.iem.pw.edu.pl/chaberb/register/user/">
             <ul>
                 <li>
-                    <label for="name">Name:</label>
-                    <input id="name" type="text" />
+                    <label for="firstname">First name:</label>
+                    <input id="firstname"
+                           name="firstname"
+                           required
+                           type="text" />
+                </li>
+                <li>
+                    <label for="lastname">Last name:</label>
+                    <input id="lastname"
+                           name="lastname"
+                           required
+                           type="text" />
+                </li>
+                <li>
+                    <label for="password">Password:</label>
+                    <input id="password"
+                           name="password"
+                           required
+                           type="password" />
+                </li>
+                <li>
+                    <label for="birthdate">Birth date:</label>
+                    <input id="birthdate"
+                           name="birthdate"
+                           type="date"/>
+                </li>
+                <li>
+                    <label for="login">Login:</label>
+                    <input id="login"
+                           name="login"
+                           required
+                           type="text"/>
+                </li>
+                <li>
+                    <label for="pesel">PESEL:</label>
+                    <input id="pesel"
+                           name="pesel"
+                           required
+                           pattern="[\d]{11}"
+                           type="text"/>
+                </li>
+                <li>
+                    <label for="photo">Photo:</label>
+                    <input id="photo"
+                           name="photo"
+                           required
+                           type="image"/>
                 </li>
                 <li>
                     <input id="submit-button"
