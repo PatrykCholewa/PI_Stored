@@ -15,6 +15,21 @@
 <body>
 
 <main>
+    <header>
+  <nav>
+    <ul>
+      <li>
+        <a href="first-page.html">My first page</a>
+      </li>
+      <li>
+        <a href="https://www.pw.edu.pl/engpw">Warsaw University of Technology</a>
+      </li>
+      <li>
+        <a href="http://www.ee.pw.edu.pl/en/">Electrical Engineering Faculty</a>
+      </li>
+    </ul>
+  </nav>
+</header>
     <section>
         <form method="POST"
               action="http://edi.iem.pw.edu.pl/chaberb/register/user/">
@@ -62,11 +77,26 @@
                            type="text"/>
                 </li>
                 <li>
+                    <label>Sex:</label>
+                    <label for="male" class="sex-input">M</label>
+                    <input id="male"
+                           class="sex-input"
+                           name="sex"
+                           value="M"
+                           type="radio"/>
+                    <label for="female" class="sex-input">F</label>
+                    <input id="female"
+                           class="sex-input"
+                           name="sex"
+                           value="F"
+                           type="radio"/>
+                </li>
+                <li>
                     <label for="photo">Photo:</label>
                     <input id="photo"
                            name="photo"
                            required
-                           type="image"/>
+                           type="file"/>
                 </li>
                 <li>
                     <input id="submit-button"
