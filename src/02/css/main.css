@@ -58,7 +58,17 @@ h1{
     text-align: center;
 }
 
+form ul {
+    width: auto;
+    padding: 30px;
+    border: 1px groove black;
+    list-style: none;
+    background: yellow;
+    border-radius: 40px;
+}
+
 form ul li {
+    display: block;
 }
 
 form ul li label {
@@ -80,6 +90,10 @@ input.sex-input {
     margin-right: 50px;
 }
 
+#submit-button {
+    width: 310px;
+}
+
 figure figcaption{
     text-align: center;
     font-style: italic;
@@ -90,4 +104,12 @@ figure figcaption{
     margin-left: auto;
     margin-right: auto;
     width: 50%;
+}
+
+.valid-input {
+    background: greenyellow;
+}
+
+.invalid-input {
+    background: firebrick;
 }

@@ -8,67 +8,76 @@
     <meta name="author" content="Patryk Cholewa">
     <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
     <link rel="stylesheet" type="text/css" href="css/main.css">
-    <script src="js/main.js" defer></script>
     <title>PI</title>
 </head>
 
 <body>
 
-<main>
-    <header>
-  <nav>
-    <ul>
-      <li>
-        <a href="first-page.html">My first page</a>
-      </li>
-      <li>
-        <a href="css/main.css">CSS Stylesheet</a>
-      </li>
-      <li>
-        <a href="js/main.js">JS Code</a>
-      </li>
-    </ul>
-  </nav>
+<header>
+    <nav>
+        <ul>
+            <li>
+                <a href="first-page.html">My first page</a>
+            </li>
+            <li>
+                <a href="css/main.css">CSS Stylesheet</a>
+            </li>
+            <li>
+                <a href="js/main.js">JS Code</a>
+            </li>
+        </ul>
+    </nav>
 </header>
+
+<main>
     <section>
+        <h1>Form</h1>
         <form method="POST"
               action="http://edi.iem.pw.edu.pl/chaberb/register/user/">
-            <ul>
-                <li>
+            <ul class="center">
+                <li class="center">
                     <label for="firstname">First name:</label>
                     <input id="firstname"
                            name="firstname"
                            required
                            type="text" />
                 </li>
-                <li>
+                <li class="center">
                     <label for="lastname">Last name:</label>
                     <input id="lastname"
                            name="lastname"
                            required
                            type="text" />
                 </li>
-                <li>
+                <li class="center">
                     <label for="password">Password:</label>
                     <input id="password"
                            name="password"
                            required
                            type="password" />
                 </li>
-                <li>
+                <li class="center">
+                    <label for="repeat-password">Repeat password:</label>
+                    <input id="repeat-password"
+                           name="password"
+                           required
+                           type="password"/>
+                </li>
+                <li class="center">
                     <label for="birthdate">Birth date:</label>
                     <input id="birthdate"
+                           min="1900-01-01"
                            name="birthdate"
                            type="date"/>
                 </li>
-                <li>
+                <li class="center">
                     <label for="login">Login:</label>
                     <input id="login"
                            name="login"
                            required
                            type="text"/>
                 </li>
-                <li>
+                <li class="center">
                     <label for="pesel">PESEL:</label>
                     <input id="pesel"
                            name="pesel"
@@ -76,7 +85,7 @@
                            pattern="[\d]{11}"
                            type="text"/>
                 </li>
-                <li>
+                <li class="center">
                     <label>Sex:</label>
                     <label for="male" class="sex-input">M</label>
                     <input id="male"
@@ -93,14 +102,14 @@
                            required
                            type="radio"/>
                 </li>
-                <li>
+                <li class="center">
                     <label for="photo">Photo:</label>
                     <input id="photo"
                            name="photo"
                            required
                            type="file"/>
                 </li>
-                <li>
+                <li class="center">
                     <input id="submit-button"
                            value="Send"
                            type="submit"/>
@@ -114,5 +123,6 @@
   <i>Patryk Cholewa, <time datetime="2018-10-11 14:00">2018</time></i>
 </footer>
 
+<script src="js/main.js"></script>
 </body>
 </html>
