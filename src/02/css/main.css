@@ -69,15 +69,18 @@ h1{
 
 form ul {
     width: auto;
-    padding: 20px;
+    padding: 40px;
     border: 1px groove black;
     list-style: none;
     background: var(--hyper-text-color);
     border-radius: 40px;
+    box-shadow: 0 0 40px 0 rgba(0,0,0,0.7);
 }
 
 form ul li {
     display: block;
+    width: 400px;
+    margin: 5px;
 }
 
 form ul li label {
@@ -102,10 +105,6 @@ input.sex-input {
 .input-status {
     font-size: 13px;
     display: inline-block;
-}
-
-.input-row {
-    width: 350px;
 }
 
 #submit-button {
