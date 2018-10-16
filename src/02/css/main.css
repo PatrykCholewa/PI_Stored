@@ -1,12 +1,21 @@
+:root {
+    --bg-color: aquamarine;
+    --side-color: lightsteelblue;
+    --hyper-text-color: yellow;
+    --hyper-bg-color: darkblue;
+    --valid-color: green;
+    --invalid-color: firebrick;
+}
+
 body {
-    background: aquamarine;
+    background: var(--bg-color);
     font-family: SansSerif, sans-serif;
     padding: 0;
     margin: 0;
 }
 
 footer {
-    background: lightsteelblue;
+    background: var(--side-color);
     margin: 0;
     padding: 1%;
     display: block;
@@ -14,7 +23,7 @@ footer {
 }
 
 header {
-    background: lightsteelblue;
+    background: var(--side-color);
     margin: 0;
     padding: 0;
     display: block;
@@ -41,12 +50,12 @@ header ul li a{
     font-size: 23px;
     text-align: center;
     text-decoration-line: none;
-    color: darkblue;
+    color: var(--hyper-bg-color);
 }
 
 header ul li a:hover{
-    background: darkblue;
-    color: yellow;
+    background: var(--hyper-bg-color);
+    color: var(--hyper-text-color);
 }
 
 section{
@@ -60,10 +69,10 @@ h1{
 
 form ul {
     width: auto;
-    padding: 30px;
+    padding: 20px;
     border: 1px groove black;
     list-style: none;
-    background: yellow;
+    background: var(--hyper-text-color);
     border-radius: 40px;
 }
 
@@ -72,22 +81,31 @@ form ul li {
 }
 
 form ul li label {
-    width: 100px;
+    width: 150px;
     display: inline-block;
 }
 
 form ul li input {
-    width: 200px;
+    width: 150px;
     display: inline-block;
 }
 
 label.sex-input {
     width: auto;
+    margin-right: 20px;
 }
 
 input.sex-input {
     width: auto;
-    margin-right: 50px;
+}
+
+.input-status {
+    font-size: 13px;
+    display: inline-block;
+}
+
+.input-row {
+    width: 350px;
 }
 
 #submit-button {
@@ -107,9 +125,9 @@ figure figcaption{
 }
 
 .valid-input {
-    background: greenyellow;
+    color: var(--valid-color);
 }
 
 .invalid-input {
-    background: firebrick;
+    color: var(--invalid-color);
 }
