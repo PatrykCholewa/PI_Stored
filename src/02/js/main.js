@@ -58,7 +58,7 @@ function checkLoginAvailability(){
 
 function setSexByPesel(){
     const pesel = document.getElementById("pesel").value.toString();
-    if( ["0", "2", "4", "6", "8"].includes(pesel[9]) ){
+    if( ["1", "3", "5", "7", "9"].includes(pesel[9]) ){
         const male = document.getElementById("male");
         male.click();
     } else {
