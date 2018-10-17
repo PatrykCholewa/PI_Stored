@@ -7,11 +7,19 @@ function init(){
     const pesel = document.getElementById("pesel");
     const password = document.getElementById("password");
     const repeat_password = document.getElementById("repeat-password");
+    const myForm = document.getElementById("my-form");
     login.addEventListener("change", checkLoginAvailability, false);
     pesel.addEventListener("change", setSexByPesel, false);
     password.addEventListener("change", checkPasswordMatch, false);
     password.addEventListener("change", checkPasswordStrength, false);
     repeat_password.addEventListener("change", checkPasswordMatch, false);
+    myForm.addEventListener("submit", preventFormSubmitIfNotValid, false);
+}
+
+function preventFormSubmitIfNotValid(event){
+    if( !checkPasswordMatch() ){
+        return event.preventDefault();
+    }
 }
 
 function checkLoginAvailability(){
@@ -37,7 +45,9 @@ function checkPasswordMatch(){
     const pass = document.getElementById("password").value;
     const pass2 = document.getElementById("repeat-password").value;
     let status = getStatusDiv("repeat-password-li","repeat-password-status");
-    setStatus(status, pass === pass2 );
+    const match = pass === pass2;
+    setStatus(status, match );
+    return match;
 }
 
 function checkPasswordStrength(){
@@ -66,7 +76,9 @@ function checkPasswordStrength(){
 function loginFreeResponseHandle(data,login){
     let json = data;
     let div = getStatusDiv("login-li","login-status");
-    setStatus(div, !json[login]);
+    const free = !json[login];
+    setStatus(div, free);
+    return free;
 }
 
 function getStatusDiv(liId, id) {
