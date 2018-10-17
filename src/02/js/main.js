@@ -23,7 +23,14 @@ function checkLoginAvailability(){
 }
 
 function setSexByPesel(){
-    //@TODO
+    const pesel = document.getElementById("pesel").value.toString();
+    if( ["0", "2", "4", "6", "8"].includes(pesel[9]) ){
+        const male = document.getElementById("male");
+        male.click();
+    } else {
+        const female = document.getElementById("female");
+        female.click();
+    }
 }
 
 function checkPasswordMatch(){
