@@ -9,7 +9,6 @@ function init(){
     const repeat_password = document.getElementById("repeat-password");
     login.addEventListener("change", checkLoginAvailability, false);
     pesel.addEventListener("change", setSexByPesel, false);
-    password.addEventListener("key-up", checkPasswordStrength, false);
     password.addEventListener("change", checkPasswordMatch, false);
     password.addEventListener("change", checkPasswordStrength, false);
     repeat_password.addEventListener("change", checkPasswordMatch, false);
@@ -18,7 +17,7 @@ function init(){
 function checkLoginAvailability(){
     const loginInput = document.getElementById("login").value;
     const regUrl = regLink + loginInput;
-    const ret = fetch(regUrl)
+    fetch(regUrl)
     .then(response => {response.json()
     .then(data => loginFreeResponseHandle(data,loginInput) )});
 }
@@ -28,7 +27,10 @@ function setSexByPesel(){
 }
 
 function checkPasswordMatch(){
-    //@TODO
+    const pass = document.getElementById("password").value;
+    const pass2 = document.getElementById("repeat-password").value;
+    let status = getStatusDiv("repeat-password-li","repeat-password-status");
+    setStatus(status, pass === pass2 );
 }
 
 function checkPasswordStrength(){
@@ -56,33 +58,34 @@ function checkPasswordStrength(){
 
 function loginFreeResponseHandle(data,login){
     let json = data;
-    let div = document.getElementById("login-status");
-    if( div == null ){
-        createNewLoginStatus();
-        div = document.getElementById("login-status");
+    let div = getStatusDiv("login-li","login-status");
+    setStatus(div, !json[login]);
+}
+
+function getStatusDiv(liId, id) {
+    let div = document.getElementById(id);
+
+    if (div == null) {
+        const loginLi = document.getElementById(liId);
+        div = document.createElement('div');
+        div.id = id;
+        div.classList.add("input-status");
+        loginLi.appendChild(div);
     }
+    return div;
+}
 
+function setStatus(div, value){
     const cls = div.classList;
-
-    if( json[login] ){
-        cls.remove("valid-input");
-        cls.add("invalid-input");
-        div.innerText = "NOK";
-    } else {
+    if( value ){
         cls.remove("invalid-input");
         cls.add("valid-input");
         div.innerText = "OK";
+    } else {
+        cls.remove("valid-input");
+        cls.add("invalid-input");
+        div.innerText = "NOK";
     }
-
-}
-
-function createNewLoginStatus(){
-    const loginLi = document.getElementById("login-li");
-    let div = document.createElement('div');
-
-    div.id = "login-status";
-    div.classList.add("input-status");
-    loginLi.appendChild(div);
 }
 
 function createNewPasswordMeter(){
