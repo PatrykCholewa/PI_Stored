@@ -93,6 +93,11 @@ form ul li input {
     display: inline-block;
 }
 
+form ul li meter {
+    height: 1em;
+    border-radius: 25px;
+}
+
 label.sex-input {
     width: auto;
     margin-right: 20px;
