@@ -15,7 +15,7 @@ def send_from_directory(content_type, path):
 
 @app.route('/cholewp1/z3/')
 def index():
-    return send_from_directory("text/html", "register.html")
+    return send_from_directory("text/html", "login.html")
 
 
 @app.route('/cholewp1/z3/css/<path:path>')
