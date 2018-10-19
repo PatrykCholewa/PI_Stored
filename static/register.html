@@ -1,132 +1,87 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Project for university">
     <meta name="keywords" content="HTML, CSS, JS">
-    <meta name="author" content="Patryk Cholewa">
-    <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <title>PI</title>
-</head>
 
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
+    <title>PI Stored</title>
+</head>
 <body>
 
-<header>
-    <nav>
-        <ul>
-            <li>
-                <a href="first-page.html">My first page</a>
-            </li>
-            <li>
-                <a href="css/main.css">CSS Stylesheet</a>
-            </li>
-            <li>
-                <a href="js/main.js">JS Code</a>
-            </li>
-        </ul>
-    </nav>
-</header>
-
 <main>
-    <section>
-        <h1>Form</h1>
-        <form id="my-form"
-              method="POST"
-              action="http://edi.iem.pw.edu.pl/chaberb/register/user/"
-              target="_self">
-            <ul class="center">
-                <li class="input-row">
-                    <label for="firstname">First name:</label>
-                    <input id="firstname"
-                           name="firstname"
-                           required
-                           type="text" />
-                </li>
-                <li class="input-row">
-                    <label for="lastname">Last name:</label>
-                    <input id="lastname"
-                           name="lastname"
-                           required
-                           type="text" />
-                </li>
-                <li id="password-li"
-                    class="input-row">
-                    <label for="password">Password:</label>
-                    <input id="password"
-                           name="password"
-                           required
-                           type="password" />
-                </li>
-                <li id="repeat-password-li"
-                    class="input-row">
-                    <label for="repeat-password">Repeat password:</label>
-                    <input id="repeat-password"
-                           required
-                           type="password"/>
-                </li>
-                <li class="input-row">
-                    <label for="birthdate">Birth date:</label>
-                    <input id="birthdate"
-                           min="1900-01-01"
-                           name="birthdate"
-                           type="date"/>
-                </li>
-                <li id="login-li"
-                    class="input-row">
-                    <label for="login">Login:</label>
-                    <input id="login"
-                           name="login"
-                           required
-                           type="text"/>
-                </li>
-                <li class="input-row">
-                    <label for="pesel">PESEL:</label>
-                    <input id="pesel"
-                           name="pesel"
-                           required
-                           pattern="[\d]{11}"
-                           type="text"/>
-                </li>
-                <li class="input-row">
-                    <label>Sex:</label>
-                    <label for="male" class="sex-input">M</label>
-                    <input id="male"
-                           class="sex-input"
-                           name="sex"
-                           value="M"
-                           required
-                           type="radio"/>
-                    <label for="female" class="sex-input">F</label>
-                    <input id="female"
-                           class="sex-input"
-                           name="sex"
-                           value="F"
-                           required
-                           type="radio"/>
-                </li>
-                <li class="input-row">
-                    <label for="photo">Photo:</label>
-                    <input id="photo"
-                           name="photo"
-                           required
-                           type="file"/>
-                </li>
-                <li class="input-row">
-                    <input id="submit-button"
-                           value="Send"
-                           type="submit"/>
-                </li>
-            </ul>
-        </form>
-    </section>
+
+    <header>
+        <div class="page-header">
+            <p class="text-center">PI Stored</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="panel well">
+            <div class="panel-heading"><h3 class="text-center">Register</h3></div>
+
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="user-id">User ID</label>
+                        <div class="col-md-4">
+                          <input id="user-id"
+                                 name="user-id"
+                                 type="text"
+                                 class="form-control input-md"
+                                 required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="password">Password</label>
+                        <div class="col-md-4">
+                            <input id="password"
+                                   name="password"
+                                   type="password"
+                                   class="form-control input-md"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="repeat-password">Repeat password</label>
+                        <div class="col-md-4">
+                            <input id="repeat-password"
+                                   name="repeat-password"
+                                   type="password"
+                                   class="form-control input-md"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="sign-in"></label>
+                        <div class="col-md-8">
+                            <button id="sign-in"
+                                    name="sign-in"
+                                    class="btn btn-md btn-primary">
+                                Sign up
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </main>
 
-<footer>
-  <i>Patryk Cholewa, <time datetime="2018-10-17 14:00">2018</time></i>
-</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script src="js/main.js"></script>
 </body>
 </html>

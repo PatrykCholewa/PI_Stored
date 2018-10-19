@@ -2,73 +2,79 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="Project for university">
     <meta name="keywords" content="HTML, CSS, JS">
-    <meta name="author" content="Patryk Cholewa">
-    <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
+
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="css/main.css">
-    <title>PI Store</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="icon" href="img/favicon.png" sizes="32x32" type="image/png">
+    <title>PI Stored</title>
 </head>
 <body>
 
 <main>
-    <form class="form-horizontal">
-        <fieldset>
 
-            <!-- Form Name -->
-            <legend>Log in</legend>
+    <header>
+        <div class="page-header">
+            <p class="text-center">PI Stored</p>
+        </div>
+    </header>
 
-            <!-- Text input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="user-id">User ID</label>
-                <div class="col-md-4">
-                  <input id="user-id"
-                         name="user-id"
-                         type="text"
-                         class="form-control input-md"
-                         required>
-                </div>
+    <div class="container">
+        <div class="panel well">
+            <div class="panel-heading"><h3 class="text-center">Log in</h3></div>
+
+            <div class="panel-body">
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="user-id">User ID</label>
+                        <div class="col-md-4">
+                          <input id="user-id"
+                                 name="user-id"
+                                 type="text"
+                                 class="form-control input-md"
+                                 required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="password">Password</label>
+                        <div class="col-md-4">
+                            <input id="password"
+                                   name="password"
+                                   type="password"
+                                   class="form-control input-md"
+                                   required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-md-4 control-label"
+                               for="sign-in"></label>
+                        <div class="col-md-8">
+                            <button id="sign-in"
+                                    name="sign-in"
+                                    class="btn btn-md btn-primary">
+                                Sign in
+                            </button>
+                            <button id="sign-up"
+                                    name="sign-up"
+                                    class="btn btn-md btn-link">
+                                Sign up
+                            </button>
+                        </div>
+                    </div>
+                </form>
             </div>
-
-            <!-- Password input-->
-            <div class="form-group">
-                <label class="col-md-4 control-label"
-                       for="password">Password</label>
-                <div class="col-md-4">
-                    <input id="password"
-                           name="password"
-                           type="password"
-                           class="form-control input-md"
-                           required>
-                </div>
-            </div>
-
-            <!-- Button (Double) -->
-            <div class="form-group">
-                <label class="col-md-4 control-label"
-                       for="sign-in"></label>
-                <div class="col-md-4">
-                    <button id="sign-in"
-                            name="sign-in"
-                            class="btn btn-primary">
-                        Sign in
-                    </button>
-                    <button id="sign-up"
-                            name="sign-up"
-                            class="btn btn-default">
-                        Sign up
-                    </button>
-                </div>
-            </div>
-
-        </fieldset>
-    </form>
+        </div>
+    </div>
 </main>
 
-<footer>
-  <i>Patryk Cholewa, <time datetime="2018">2018</time></i>
-</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="https://maxcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 </body>
 </html>

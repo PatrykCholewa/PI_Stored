@@ -18,6 +18,11 @@ def index():
     return send_from_directory("text/html", "login.html")
 
 
+@app.route('/cholewp1/z3/register/')
+def send_html_register():
+    return send_from_directory("text/html", "register.html")
+
+
 @app.route('/cholewp1/z3/css/<path:path>')
 def send_css(path):
     return send_from_directory('text/css', "css/" + path)
@@ -31,3 +36,15 @@ def send_js(path):
 @app.route('/cholewp1/z3/img/<path:path>')
 def send_img(path):
     return send_from_directory('image', "img/" + path)
+
+
+@app.route('/cholewp1/z3/ws/login/')
+def login():
+    # @TODO
+    return
+
+
+@app.route('/cholewp1/z3/ws/register/')
+def register():
+    # @TODO
+    return
