@@ -1,10 +1,10 @@
-from html import escape
-
 from flask import Flask, request, session
 from src import ResourceManager, DatabaseManager, ResponseManager
 
 __page_login = "login.html"
 __page_register = "register.html"
+__page_list = "list.html"
+__page_add_file = "add_file.html"
 
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
@@ -13,7 +13,7 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 @app.route('/cholewp1/z3/')
 def index():
     if 'username' in session:
-        return 'Logged in as %s' % escape(session['username'])
+        return ResourceManager.send_html(__page_list)
     return ResourceManager.send_html(__page_login)
 
 
@@ -42,9 +42,7 @@ def login():
     user = DatabaseManager.get_user_by_username(request.form['user-id'])
     if user.check_password(request.form['password']):
         session['username'] = user.username
-        return ResponseManager.create_response_200("OK", "text/plain")
-    #     app.logger.info('%s logged in successfully', user.username)
-    #     return redirect(url_for('index'))
+        return ResourceManager.send_html(__page_list)
     else:
         ResponseManager.create_response_401()
 
