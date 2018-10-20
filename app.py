@@ -1,5 +1,5 @@
 from flask import Flask, request
-from src import ResourceManager
+from src import ResourceManager, DatabaseManager, ResponseManager
 
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4v[$:VHW]'
@@ -30,17 +30,18 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/z3/ws/login', methods=['POST'])
+@app.route('/cholewp1/z3/ws/login/', methods=['POST'])
 def login():
-    # user = get_user(request.form['username'])
-    # if user.check_password(request.form['password']):
+    user = DatabaseManager.get_user_by_username(request.form['user-id'])
+    if user.check_password(request.form['password']):
+        return ResponseManager.create_response_200("OK", "text/plain")
     #     login_user(user)
     #     app.logger.info('%s logged in successfully', user.username)
     #     return redirect(url_for('index'))
     # else:
     #     app.logger.info('%s failed to log in', user.username)
     #     abort(401)
-    return
+    return ResponseManager.create_response_200("NOK", "text/plain")
 
 
 @app.route('/cholewp1/z3/ws/register/')
