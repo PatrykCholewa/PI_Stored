@@ -1,18 +1,25 @@
-from flask import Flask, request
-from src import ResourceManager, DatabaseManager, ResponseManager, SessionManager
+from html import escape
+
+from flask import Flask, request, session
+from src import ResourceManager, DatabaseManager, ResponseManager
+
+__page_login = "login.html"
+__page_register = "register.html"
 
 app = Flask(__name__)
-app.secret_key = b'45wh/;ehww4v[$:VHW]'
+app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 
 
 @app.route('/cholewp1/z3/')
 def index():
-    return ResourceManager.send_html("login.html")
+    if 'username' in session:
+        return 'Logged in as %s' % escape(session['username'])
+    return ResourceManager.send_html(__page_login)
 
 
 @app.route('/cholewp1/z3/register/')
 def send_html_register():
-    return ResourceManager.send_html("register.html")
+    return ResourceManager.send_html(__page_register)
 
 
 @app.route('/cholewp1/z3/css/<path:path>')
@@ -34,15 +41,21 @@ def send_img(path):
 def login():
     user = DatabaseManager.get_user_by_username(request.form['user-id'])
     if user.check_password(request.form['password']):
+        session['username'] = user.username
         return ResponseManager.create_response_200("OK", "text/plain")
-    #     login_user(user)
     #     app.logger.info('%s logged in successfully', user.username)
     #     return redirect(url_for('index'))
     else:
         ResponseManager.create_response_401()
 
 
-@app.route('/cholewp1/z3/ws/register/')
+@app.route('/cholewp1/z3/ws/logout/', methods=['POST'])
+def logout():
+    session.pop('username', None)
+    return ResourceManager.send_html(__page_login)
+
+
+@app.route('/cholewp1/z3/ws/register/', methods=['POST'])
 def register():
     # @TODO
     return
