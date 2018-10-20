@@ -1,5 +1,5 @@
 from flask import Flask, request
-from src import ResourceManager, DatabaseManager, ResponseManager
+from src import ResourceManager, DatabaseManager, ResponseManager, SessionManager
 
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4v[$:VHW]'
@@ -38,10 +38,8 @@ def login():
     #     login_user(user)
     #     app.logger.info('%s logged in successfully', user.username)
     #     return redirect(url_for('index'))
-    # else:
-    #     app.logger.info('%s failed to log in', user.username)
-    #     abort(401)
-    return ResponseManager.create_response_200("NOK", "text/plain")
+    else:
+        ResponseManager.create_response_401()
 
 
 @app.route('/cholewp1/z3/ws/register/')
