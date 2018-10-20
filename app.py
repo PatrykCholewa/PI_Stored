@@ -22,6 +22,11 @@ def send_html_register():
     return ResourceManager.send_html(__page_register)
 
 
+@app.route('/cholewp1/z3/template/<path:path>')
+def send_html_template(path):
+    return ResourceManager.send_html_template(path)
+
+
 @app.route('/cholewp1/z3/css/<path:path>')
 def send_css(path):
     return ResourceManager.send_css(path)

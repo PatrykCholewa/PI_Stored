@@ -25,3 +25,7 @@ def send_js(file_name):
 
 def send_img(file_name):
     return _create_response_with_resource("img/" + file_name, "image")
+
+
+def send_html_template(file_name):
+    return _create_response_with_resource("template/" + file_name, "text/html")
