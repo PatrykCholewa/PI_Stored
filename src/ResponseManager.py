@@ -1,4 +1,4 @@
-from flask import Response
+from flask import Response, abort
 
 
 def _create_response(content, content_type, status_code, status):
@@ -13,5 +13,9 @@ def create_response_200(content, content_type):
     return _create_response(content, content_type, 200, "200 OK")
 
 
-def create_response_401(content, content_type):
-    return _create_response(content, content_type, 401, "401 Unauthorized")
+def create_response_401():
+    return abort(401)
+
+
+def create_response_404():
+    return abort(404)
