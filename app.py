@@ -66,3 +66,21 @@ def register():
     else:
         # @TODO better response
         return ResponseManager.create_response_404()
+
+
+@app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
+def post_file():
+    # @TODO
+    return
+
+
+@app.route('/cholewp1/z3/ws/files/list/', methods=['GET'])
+def get_file_list():
+    # @TODO
+    return
+
+
+@app.route('/cholewp1/z3/ws/files/get', methods=['GET'])
+def get_file():
+    # @TODO
+    return
