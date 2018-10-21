@@ -17,9 +17,19 @@ def index():
     return ResourceManager.send_html(__page_login)
 
 
+@app.route('/cholewp1/z3/login')
+def send_html_login():
+    return index()
+
+
 @app.route('/cholewp1/z3/register')
 def send_html_register():
     return ResourceManager.send_html(__page_register)
+
+
+@app.route('/cholewp1/z3/list')
+def send_html_list():
+    return ResourceManager.send_html(__page_list)
 
 
 @app.route('/cholewp1/z3/template/<path:path>')
