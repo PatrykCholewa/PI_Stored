@@ -15,7 +15,6 @@ function create_list(data){
     for( let i = 0 ; i < files.length ; i++ ){
         innerHtml = innerHtml + create_item(files[i]);
     }
-    console.log(innerHtml);
     $('#panel-list').html(innerHtml);
 }
 
