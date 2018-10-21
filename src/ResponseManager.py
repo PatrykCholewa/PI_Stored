@@ -19,3 +19,7 @@ def create_response_401():
 
 def create_response_404():
     return abort(404)
+
+
+def create_response_403():
+    return abort(403)

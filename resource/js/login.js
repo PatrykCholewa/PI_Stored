@@ -15,7 +15,7 @@ function login(event) {
         if (response.ok) {
             window.location = "list";
         } else {
-            console.log(response);
+            alert("Invalid user id or password!");
         }
     });
     return false;

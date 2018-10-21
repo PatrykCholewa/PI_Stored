@@ -1,5 +1,5 @@
-from flask import Flask, request, session
-from src import ResourceManager, DatabaseManager, ResponseManager
+from flask import Flask, request, session, Response
+from src import ResourceManager, DatabaseManager, ResponseManager, UserFileManager
 
 __page_login = "login.html"
 __page_register = "register.html"
@@ -78,14 +78,18 @@ def register():
         return ResponseManager.create_response_404()
 
 
-@app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
-def post_file():
-    # @TODO
-    return
-
-
 @app.route('/cholewp1/z3/ws/files/list/', methods=['GET'])
 def get_file_list():
+    if 'username' not in session:
+        return ResponseManager.create_response_403()
+
+    return ResponseManager.create_response_200(
+        UserFileManager.get_user_file_names(session['username']),
+        "application/json")
+
+
+@app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
+def post_file():
     # @TODO
     return
 
