@@ -60,5 +60,9 @@ def logout():
 
 @app.route('/cholewp1/z3/ws/register/', methods=['POST'])
 def register():
-    # @TODO
-    return
+    new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
+    if new_user is not None:
+        return ResourceManager.send_html(__page_login)
+    else:
+        # @TODO better response
+        return ResponseManager.create_response_404()

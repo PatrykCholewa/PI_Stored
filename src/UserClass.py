@@ -21,3 +21,11 @@ class UserClass:
     def check_password(self, password):
         passhash = hashlib.sha256(password.encode()).hexdigest()
         return self._hash == passhash
+
+    def to_dbrecord(self):
+        return self._username + " " + self._hash
+
+    @classmethod
+    def create_user(cls, username, password):
+        passhash = hashlib.sha256(password.encode()).hexdigest()
+        return cls(username + " " + passhash)
