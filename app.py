@@ -44,9 +44,9 @@ def send_img(path):
 
 @app.route('/cholewp1/z3/ws/login/', methods=['POST'])
 def login():
-    user = DatabaseManager.get_user_by_username(request.form['user-id'])
-    if user.check_password(request.form['password']):
-        session['username'] = user.username
+    username = request.form['user-id']
+    if DatabaseManager.authenticate_user(username, request.form['password']):
+        session['username'] = username
         return ResourceManager.send_html(__page_list)
     else:
         ResponseManager.create_response_401()

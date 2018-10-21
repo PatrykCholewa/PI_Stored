@@ -33,3 +33,11 @@ def add_new_user(username, password):
         return user
     else:
         return None
+
+
+def authenticate_user(username, password):
+    user = get_user_by_username(username)
+    if user.check_password(password):
+        return True
+    else:
+        return False
