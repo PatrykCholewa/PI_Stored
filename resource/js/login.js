@@ -5,11 +5,14 @@ $(function(){
 
 function login(event) {
     event.preventDefault();
+
+   let data = new FormData(document.getElementById("login-form"));
+
     fetch("ws/login/", {
         method: "POST",
-        body: "user-id:cholewp1\npassword=pass"
+        body: data
     }).then( response => {
-        if (response.statusCode === 200) {
+        if (response.ok) {
             window.location = "list";
         } else {
             console.log(response);

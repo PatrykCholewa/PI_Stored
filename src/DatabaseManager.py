@@ -37,6 +37,9 @@ def add_new_user(username, password):
 
 def authenticate_user(username, password):
     user = get_user_by_username(username)
+    if user is None:
+        return False
+
     if user.check_password(password):
         return True
     else:
