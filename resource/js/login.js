@@ -1,6 +1,7 @@
 $(function(){
     $("#login-form").submit(login);
-    $("#sign-up").click(redirectToRegister);
+    // $("#sign-up").click(redirectToRegister);
+    $("#sign-up").click(function(){alert("Not implemented yet!")});
 });
 
 function login(event) {

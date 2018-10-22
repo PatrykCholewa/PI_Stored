@@ -34,4 +34,13 @@ def get_user_file(username, filename):
     if file is None:
         return None
 
+    file.close()
     return file
+
+
+def save_user_file(username, filename, file):
+    check_dir_exist(username)
+    wfile = open(__users_dir + username + "/" + filename, "wb")
+    wfile.write(file)
+    wfile.close()
+    return True

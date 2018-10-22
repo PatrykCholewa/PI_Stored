@@ -32,6 +32,11 @@ def send_html_list():
     return ResourceManager.send_html(__page_list)
 
 
+@app.route('/cholewp1/z3/add_file')
+def send_html_add_file():
+    return ResourceManager.send_html(__page_add_file)
+
+
 @app.route('/cholewp1/z3/template/<path:path>')
 def send_html_template(path):
     return ResourceManager.send_html_template(path)
@@ -90,8 +95,12 @@ def get_file_list():
 
 @app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
 def post_file():
-    # @TODO
-    return
+    if 'username' not in session:
+        return ResponseManager.create_response_403()
+
+    return UserFileManager.save_user_file(
+        session['username'],
+        request.data)
 
 
 @app.route('/cholewp1/z3/ws/files/get/<path:path>', methods=['GET'])
