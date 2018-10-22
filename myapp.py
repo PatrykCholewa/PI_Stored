@@ -107,11 +107,12 @@ def post_file():
         flash('No selected file')
         return ResponseManager.create_response_400()
 
-    UserFileManager.save_user_file(
+    if UserFileManager.save_user_file(
         session['username'],
-        file)
-
-    return ResponseManager.create_response_200(None, None)
+        file):
+        return ResponseManager.create_response_200(None, None)
+    else:
+        return ResponseManager.create_response_403()
 
 
 @app.route('/cholewp1/z3/ws/files/get/<path:path>', methods=['GET'])

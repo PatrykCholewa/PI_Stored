@@ -41,6 +41,9 @@ def get_user_file(username, filename):
 
 def save_user_file(username, file):
     check_dir_exist(username)
+    if len(listdir(__users_dir + username)) > 4:
+        return False
+
     filename = secure_filename(file.filename)
-    file.save(filename)
+    file.save(__users_dir + username + "/" + filename)
     return True

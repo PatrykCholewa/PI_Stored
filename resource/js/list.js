@@ -6,7 +6,21 @@ function get_item_list(){
     fetch("ws/files/list/", {
         method: "GET",
     }).then( response => response.json()
-    .then(data => create_list(data)));
+    .then(data => {
+        create_list(data);
+        check_item_count();
+    }));
+}
+
+function check_item_count() {
+    const items = $(".list-group-item");
+    if( items.length > 4 ){
+        const btn = $("#add_file_btn")
+        btn.attr("disabled", true);
+        btn.click(function(ev){
+            ev.preventDefault();
+        });
+    }
 }
 
 function create_list(data){
