@@ -27,3 +27,11 @@ def get_user_file_names(username):
 
     ret = ret + "]}"
     return ret
+
+
+def get_user_file(username, filename):
+    file = open(__users_dir + username + "/" + filename, "rb")
+    if file is None:
+        return None
+
+    return file

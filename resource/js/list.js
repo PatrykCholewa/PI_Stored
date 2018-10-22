@@ -19,13 +19,9 @@ function create_list(data){
 }
 
 function create_item(fileName){
-    return '<a href="#" download onclick="get_file('
+    return '<a download href="ws/files/get/'
         + fileName
-        + ')" class="list-group-item list-group-item-action well"><b>'
+        + ' " class="list-group-item list-group-item-action well"><b>'
         + fileName
         + '</b></a>'
-}
-
-function get_file(filename){
-    //@TODO
 }

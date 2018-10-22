@@ -94,7 +94,12 @@ def post_file():
     return
 
 
-@app.route('/cholewp1/z3/ws/files/get', methods=['GET'])
-def get_file():
-    # @TODO
-    return
+@app.route('/cholewp1/z3/ws/files/get/<path:path>', methods=['GET'])
+def get_file(path):
+    if 'username' not in session:
+        return ResponseManager.create_response_403()
+
+    return ResponseManager.create_response_200(
+        UserFileManager.get_user_file(session['username'], path),
+        'application/octet-stream'
+    )
