@@ -1,4 +1,5 @@
-from os import listdir, mkdir
+from os import listdir, mkdir, path
+from werkzeug.utils import secure_filename
 
 __users_dir = "db/userfiles/"
 
@@ -38,9 +39,8 @@ def get_user_file(username, filename):
     return file
 
 
-def save_user_file(username, filename, file):
+def save_user_file(username, file):
     check_dir_exist(username)
-    wfile = open(__users_dir + username + "/" + filename, "wb")
-    wfile.write(file)
-    wfile.close()
+    filename = secure_filename(file.filename)
+    file.save(filename)
     return True

@@ -1,4 +1,4 @@
-from flask import Flask, request, session, Response
+from flask import Flask, request, session, flash
 from src import ResourceManager, DatabaseManager, ResponseManager, UserFileManager
 
 __page_login = "login.html"
@@ -24,7 +24,8 @@ def send_html_login():
 
 @app.route('/cholewp1/z3/register')
 def send_html_register():
-    return ResourceManager.send_html(__page_register)
+    return ResponseManager.create_response_403()
+    # return ResourceManager.send_html(__page_register)
 
 
 @app.route('/cholewp1/z3/list')
@@ -79,14 +80,13 @@ def register():
     if new_user is not None:
         return ResourceManager.send_html(__page_login)
     else:
-        # @TODO better response
-        return ResponseManager.create_response_404()
+        return ResponseManager.create_response_401()
 
 
 @app.route('/cholewp1/z3/ws/files/list/', methods=['GET'])
 def get_file_list():
     if 'username' not in session:
-        return ResponseManager.create_response_403()
+        return ResponseManager.create_response_401()
 
     return ResponseManager.create_response_200(
         UserFileManager.get_user_file_names(session['username']),
@@ -96,17 +96,28 @@ def get_file_list():
 @app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
 def post_file():
     if 'username' not in session:
-        return ResponseManager.create_response_403()
+        return ResponseManager.create_response_401()
 
-    return UserFileManager.save_user_file(
+    if 'file' not in request.files:
+        flash("No file part!")
+        return ResponseManager.create_response_400()
+
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        return ResponseManager.create_response_400()
+
+    UserFileManager.save_user_file(
         session['username'],
-        request.data)
+        file)
+
+    return ResponseManager.create_response_200(None, None)
 
 
 @app.route('/cholewp1/z3/ws/files/get/<path:path>', methods=['GET'])
 def get_file(path):
     if 'username' not in session:
-        return ResponseManager.create_response_403()
+        return ResponseManager.create_response_401()
 
     return ResponseManager.create_response_200(
         UserFileManager.get_user_file(session['username'], path),

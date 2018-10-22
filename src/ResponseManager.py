@@ -23,3 +23,7 @@ def create_response_404():
 
 def create_response_403():
     return abort(403)
+
+
+def create_response_400():
+    return abort(400)
