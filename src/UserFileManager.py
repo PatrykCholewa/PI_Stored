@@ -35,7 +35,6 @@ def get_user_file(username, filename):
     if file is None:
         return None
 
-    file.close()
     return file
 
 
