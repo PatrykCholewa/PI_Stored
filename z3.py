@@ -8,6 +8,10 @@ __page_add_file = "add_file.html"
 
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
+app.config.update(
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SECURE=True
+)
 
 
 @app.route('/cholewp1/z3/')

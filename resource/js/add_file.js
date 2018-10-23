@@ -32,7 +32,7 @@ function handle_file_drop(event){
 }
 
 function send_file(file){
-    let data = new FormData()
+    let data = new FormData();
     data.append('file', file);
 
     fetch("ws/files/add/", {
