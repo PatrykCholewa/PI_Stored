@@ -6,6 +6,10 @@ __page_register = "register.html"
 __page_list = "list.html"
 __page_add_file = "add_file.html"
 
+
+session_dict = {}
+
+
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
@@ -28,8 +32,8 @@ def send_html_login():
 
 @app.route('/cholewp1/z3/register')
 def send_html_register():
-    # return ResponseManager.create_response_403()
-    return ResourceManager.send_html(__page_register)
+    return ResponseManager.create_response_403()
+    # return ResourceManager.send_html(__page_register)
 
 
 @app.route('/cholewp1/z3/list')
@@ -80,11 +84,12 @@ def logout():
 
 @app.route('/cholewp1/z3/ws/register/', methods=['POST'])
 def register():
-    new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
-    if new_user is not None:
-        return ResourceManager.send_html(__page_login)
-    else:
-        return ResponseManager.create_response_401()
+    return ResponseManager.create_response_403()
+    # new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
+    # if new_user is not None:
+    #     return ResourceManager.send_html(__page_login)
+    # else:
+    #     return ResponseManager.create_response_401()
 
 
 @app.route('/cholewp1/z3/ws/files/list/', methods=['GET'])
