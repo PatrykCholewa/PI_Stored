@@ -1,3 +1,4 @@
+import uuid
 from flask import Flask, request, session, flash
 from src import ResourceManager, DatabaseManager, ResponseManager, UserFileManager
 
@@ -7,7 +8,7 @@ __page_list = "list.html"
 __page_add_file = "add_file.html"
 
 
-session_dict = {}
+sids = set()
 
 
 app = Flask(__name__)
@@ -16,6 +17,13 @@ app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
     # SESSION_COOKIE_SECURE=True
 )
+
+
+def is_not_logged():
+    if 'sid' not in session:
+        return True
+
+    return not session['sid'] in sids
 
 
 @app.route('/cholewp1/z3/')
@@ -38,11 +46,17 @@ def send_html_register():
 
 @app.route('/cholewp1/z3/list')
 def send_html_list():
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
     return ResourceManager.send_html(__page_list)
 
 
 @app.route('/cholewp1/z3/add_file')
 def send_html_add_file():
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
     return ResourceManager.send_html(__page_add_file)
 
 
@@ -70,7 +84,10 @@ def send_img(path):
 def login():
     username = request.form['user-id']
     if DatabaseManager.authenticate_user(username, request.form['password']):
+        sid = str(uuid.uuid4())
         session['username'] = username
+        session['sid'] = sid
+        sids.add(sid)
         return ResourceManager.send_html(__page_list)
     else:
         ResponseManager.create_response_401()
@@ -78,6 +95,8 @@ def login():
 
 @app.route('/cholewp1/z3/ws/logout/', methods=['POST'])
 def logout():
+    sids.remove(session['sid'])
+    session.pop('sid', None)
     session.pop('username', None)
     return ResourceManager.send_html(__page_login)
 
@@ -94,7 +113,7 @@ def register():
 
 @app.route('/cholewp1/z3/ws/files/list/', methods=['GET'])
 def get_file_list():
-    if 'username' not in session:
+    if is_not_logged():
         return ResponseManager.create_response_401()
 
     return ResponseManager.create_response_200(
@@ -104,7 +123,7 @@ def get_file_list():
 
 @app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
 def post_file():
-    if 'username' not in session:
+    if is_not_logged():
         return ResponseManager.create_response_401()
 
     if 'file' not in request.files:
@@ -126,7 +145,7 @@ def post_file():
 
 @app.route('/cholewp1/z3/ws/files/get/<path:path>', methods=['GET'])
 def get_file(path):
-    if 'username' not in session:
+    if is_not_logged():
         return ResponseManager.create_response_401()
 
     return ResponseManager.create_response_200(

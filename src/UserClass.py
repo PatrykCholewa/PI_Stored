@@ -1,7 +1,6 @@
 import hashlib
 import string
 import random
-from os import urandom
 
 
 class UserClass:
