@@ -32,7 +32,7 @@ class UserClass:
 
     @classmethod
     def create_user(cls, username, password):
-        letters = string.ascii_lowercase
+        letters = string.ascii_letters + string.digits
         salt = ''.join(random.choice(letters) for i in range(8))
         passhash = hashlib.sha256((password + salt).encode()).hexdigest()
         return cls(username + " " + passhash + " " + salt)
