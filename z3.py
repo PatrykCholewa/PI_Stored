@@ -7,9 +7,7 @@ __page_register = "register.html"
 __page_list = "list.html"
 __page_add_file = "add_file.html"
 
-
 sids = set()
-
 
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
@@ -136,8 +134,8 @@ def post_file():
         return ResponseManager.create_response_400()
 
     if UserFileManager.save_user_file(
-        session['username'],
-        file):
+            session['username'],
+            file):
         return ResponseManager.create_response_200(None, None)
     else:
         return ResponseManager.create_response_403()
