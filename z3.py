@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True
+    # SESSION_COOKIE_SECURE=True
 )
 
 
@@ -26,9 +26,10 @@ def is_not_logged():
 
 @app.route('/cholewp1/z3/')
 def index():
-    if 'username' in session:
-        return ResourceManager.send_html(__page_list)
-    return ResourceManager.send_html(__page_login)
+    if is_not_logged():
+        return ResourceManager.send_html(__page_login)
+
+    return ResourceManager.send_html(__page_list)
 
 
 @app.route('/cholewp1/z3/login')
@@ -45,7 +46,7 @@ def send_html_register():
 @app.route('/cholewp1/z3/list')
 def send_html_list():
     if is_not_logged():
-        return ResponseManager.create_response_401()
+        return index()
 
     return ResourceManager.send_html(__page_list)
 
@@ -53,7 +54,7 @@ def send_html_list():
 @app.route('/cholewp1/z3/add_file')
 def send_html_add_file():
     if is_not_logged():
-        return ResponseManager.create_response_401()
+        return index()
 
     return ResourceManager.send_html(__page_add_file)
 
@@ -93,6 +94,9 @@ def login():
 
 @app.route('/cholewp1/z3/ws/logout/', methods=['POST'])
 def logout():
+    if is_not_logged():
+        return ResponseManager.create_response_400()
+
     sids.remove(session['sid'])
     session.pop('sid', None)
     session.pop('username', None)
