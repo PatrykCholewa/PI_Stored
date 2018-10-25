@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True
+    # SESSION_COOKIE_SECURE=True
 )
 
 
@@ -28,8 +28,8 @@ def send_html_login():
 
 @app.route('/cholewp1/z3/register')
 def send_html_register():
-    return ResponseManager.create_response_403()
-    # return ResourceManager.send_html(__page_register)
+    # return ResponseManager.create_response_403()
+    return ResourceManager.send_html(__page_register)
 
 
 @app.route('/cholewp1/z3/list')
