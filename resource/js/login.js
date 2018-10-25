@@ -16,7 +16,8 @@ function login(event) {
         if (response.ok) {
             window.location = "list";
         } else {
-            alert("Invalid user id or password!");
+            $("#login-panel").addClass("panel-danger");
+            $("#login-panel-heading").text("Invalid user ID or password!");
         }
     });
     return false;
