@@ -8,8 +8,8 @@ uuid 	- sid
 
 r =  redis.Redis()
 sid = 'foo' # sid = str(uuid.uuid4())
-r.hset('bach':webapp:foo', 'login', 'chaberb') # r.hest ...
-r.het('bach:webapp:' + sid : {'login')
+r.hset('bach':webapp:foo', 'login', 'chaberb') # r.hset ...
+r.hget('bach:webapp:' + sid : {'login')
 
 -- db
 login
