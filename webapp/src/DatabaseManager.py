@@ -1,14 +1,18 @@
 from src.UserClass import UserClass
+from redis import Redis
 
-__users_file = "db/users.db.txt"
+
+__db = Redis()
+__dbrecord_prefix = "cholewp1:webapp:v4"
 
 
 def get_user_by_username(username):
-    users = open(__users_file, "r").read().splitlines()
-    for db_record in users:
-        user = UserClass(db_record)
-        if user.username == username:
-            return user
+    db_record = __db.hget(__dbrecord_prefix, username)
+    if db_record is None:
+        return None
+    user = UserClass(db_record.decode('utf-8'))
+    if user.username == username:
+        return user
 
     return None
 
@@ -18,12 +22,8 @@ def _add_user_to_db(user):
     if db_user is not None:
         return False
     else:
-        file = open(__users_file, "r")
-        filetext = file.read()
-        file.close()
-        filetext = filetext + "\n" + user.to_dbrecord()
-        file = open(__users_file, "w")
-        file.write(filetext)
+        dbrecord = user.to_dbrecord()
+        __db.hset(__dbrecord_prefix, user.username, dbrecord)
         return True
 
 
