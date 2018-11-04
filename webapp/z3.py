@@ -1,4 +1,3 @@
-import uuid
 from flask import Flask, request, session
 from src import ResourceManager, DatabaseManager, ResponseManager
 
@@ -6,8 +5,6 @@ __page_login = "login.html"
 __page_register = "register.html"
 __page_list = "list.html"
 __page_add_file = "add_file.html"
-
-sids = set()
 
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
@@ -21,7 +18,7 @@ def is_not_logged():
     if 'sid' not in session:
         return True
 
-    return not session['sid'] in sids
+    return not DatabaseManager.check_session_valid(session['username'], session['sid'])
 
 
 @app.route('/cholewp1/z3/')
@@ -46,7 +43,7 @@ def send_html_register():
 @app.route('/cholewp1/z3/list')
 def send_html_list():
     if is_not_logged():
-        return index()
+        return ResponseManager.create_response_401()
 
     return ResourceManager.send_html(__page_list)
 
@@ -54,7 +51,7 @@ def send_html_list():
 @app.route('/cholewp1/z3/add_file')
 def send_html_add_file():
     if is_not_logged():
-        return index()
+        return ResponseManager.create_response_401()
 
     return ResourceManager.send_html(__page_add_file)
 
@@ -83,10 +80,9 @@ def send_img(path):
 def login():
     username = request.form['user-id']
     if DatabaseManager.authenticate_user(username, request.form['password']):
-        sid = str(uuid.uuid4())
+        sid = DatabaseManager.create_new_session(username)
         session['username'] = username
         session['sid'] = sid
-        sids.add(sid)
         return ResourceManager.send_html(__page_list)
     else:
         ResponseManager.create_response_401()
@@ -97,7 +93,7 @@ def logout():
     if is_not_logged():
         return ResponseManager.create_response_400()
 
-    sids.remove(session['sid'])
+    DatabaseManager.delete_session(session['username'])
     session.pop('sid', None)
     session.pop('username', None)
     return ResourceManager.send_html(__page_login)
