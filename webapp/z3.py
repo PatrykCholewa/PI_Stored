@@ -1,6 +1,6 @@
 import uuid
 from flask import Flask, request, session, flash
-from src import ResourceManager, DatabaseManager, ResponseManager, UserFileManager
+from src import ResourceManager, DatabaseManager, ResponseManager
 
 __page_login = "login.html"
 __page_register = "register.html"
@@ -13,7 +13,7 @@ app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True
+    # SESSION_COOKIE_SECURE=True
 )
 
 
@@ -111,46 +111,3 @@ def register():
     #     return ResourceManager.send_html(__page_login)
     # else:
     #     return ResponseManager.create_response_401()
-
-
-@app.route('/cholewp1/z3/ws/files/list/', methods=['GET'])
-def get_file_list():
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
-    return ResponseManager.create_response_200(
-        UserFileManager.get_user_file_names(session['username']),
-        "application/json")
-
-
-@app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
-def post_file():
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
-    if 'file' not in request.files:
-        flash("No file part!")
-        return ResponseManager.create_response_400()
-
-    file = request.files['file']
-    if file.filename == '':
-        flash('No selected file')
-        return ResponseManager.create_response_400()
-
-    if UserFileManager.save_user_file(
-            session['username'],
-            file):
-        return ResponseManager.create_response_200(None, None)
-    else:
-        return ResponseManager.create_response_403()
-
-
-@app.route('/cholewp1/z3/ws/files/get/<path:path>', methods=['GET'])
-def get_file(path):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
-    return ResponseManager.create_response_200(
-        UserFileManager.get_user_file(session['username'], path),
-        'application/octet-stream'
-    )
