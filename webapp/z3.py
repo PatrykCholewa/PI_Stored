@@ -1,5 +1,5 @@
 from flask import Flask, request, session
-from src import ResourceManager, DatabaseManager, ResponseManager
+from src import ResourceManager, DatabaseManager, ResponseManager, CookieManager
 
 __page_login = "login.html"
 __page_register = "register.html"
@@ -10,7 +10,9 @@ app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    # SESSION_COOKIE_SECURE=True
+    # SESSION_COOKIE_SECURE=True,
+    REMEMBER_COOKIE_HTTPONLY=True,
+    # REMEMBER_COOKIE_SECURE=True
 )
 
 
@@ -76,22 +78,25 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/z3/ws/login/', methods=['POST'])
+@app.route('/cholewp1/z3/webapp/login/', methods=['POST'])
 def login():
     username = request.form['user-id']
     if DatabaseManager.authenticate_user(username, request.form['password']):
         sid = DatabaseManager.create_new_session(username)
         session['username'] = username
         session['sid'] = sid
-        return ResourceManager.send_html(__page_list)
+
+        response = ResourceManager.send_html(__page_list)
+        response = CookieManager.set_user_cookie_to_response(response, session['username'])
+        return response
     else:
         ResponseManager.create_response_401()
 
 
-@app.route('/cholewp1/z3/ws/logout/', methods=['POST'])
+@app.route('/cholewp1/z3/webapp/logout/', methods=['POST'])
 def logout():
     if is_not_logged():
-        return ResponseManager.create_response_400()
+        return ResponseManager.create_response_401()
 
     DatabaseManager.delete_session(session['username'])
     session.pop('sid', None)
@@ -99,11 +104,11 @@ def logout():
     return ResourceManager.send_html(__page_login)
 
 
-@app.route('/cholewp1/z3/ws/register/', methods=['POST'])
+@app.route('/cholewp1/z3/webapp/register/', methods=['POST'])
 def register():
-    # return ResponseManager.create_response_403()
-    new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
-    if new_user is not None:
-        return ResourceManager.send_html(__page_login)
-    else:
-        return ResponseManager.create_response_401()
+    return ResponseManager.create_response_403()
+    # new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
+    # if new_user is not None:
+    #     return ResourceManager.send_html(__page_login)
+    # else:
+    #     return ResponseManager.create_response_401()

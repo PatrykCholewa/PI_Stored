@@ -3,7 +3,7 @@ $(function(){
 });
 
 function logout(){
-    fetch("ws/logout/", {
+    fetch("webapp/logout/", {
         method: "POST"
     }).then( response => {
         window.location = "login";
