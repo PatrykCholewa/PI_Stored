@@ -3,7 +3,18 @@ $(function(){
 });
 
 function get_item_list(){
-    fetch("../dl/cholewp1/list/", {
+    fetch("cookie/user/", {
+        method: "GET"
+    }).then(response => response.text()
+        .then( username => {
+        get_item_list_by_username(username);
+    }));
+
+}
+
+function get_item_list_by_username(username){
+    let path = "../dl/" + username + "/list/";
+    fetch(path, {
         method: "GET",
     }).then( response => response.json()
     .then(data => {
@@ -11,6 +22,7 @@ function get_item_list(){
         check_item_count();
     }));
 }
+
 
 function check_item_count() {
     const items = $(".list-group-item");

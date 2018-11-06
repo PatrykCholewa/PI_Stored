@@ -10,14 +10,17 @@ app.config.update(
 )
 
 
-@app.route('/<user>/list/', methods=['GET'])
+@app.route('/cholewp1/dl/<user>/list/', methods=['GET'])
 def get_file_list(user):
     cookie = request.cookies.get("user")
+    if cookie is None:
+        return ResponseManager.create_response_401()
+
     if not CookieManager.validate_user_jwt(cookie, user):
         return ResponseManager.create_response_401()
 
     return ResponseManager.create_response_200(
-        UserFileManager.get_user_file_names(session['username']),
+        UserFileManager.get_user_file_names(user),
         "application/json")
 
 

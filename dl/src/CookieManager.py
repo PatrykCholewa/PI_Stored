@@ -36,10 +36,9 @@ secret = b'soinGERG#25gappk2GWG32$#^ azg'
 #     return new_response
 
 def validate_user_jwt(token, username):
-    decode = jwt.decode(token, secret, "HS256")
-    dic = json.load(decode)
-    expire = dict['exp']
-    if username != dic['username']:
+    token = jwt.decode(token, secret, "HS256")
+    expire = token['exp']
+    if username != token['user']:
         return False
 
-    return datetime.now() < expire
+    return datetime.now() < datetime.fromtimestamp(expire)

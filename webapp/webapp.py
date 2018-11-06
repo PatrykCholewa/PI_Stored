@@ -84,7 +84,7 @@ def get_new_user_cookie():
     if is_not_logged():
         return ResponseManager.create_response_401()
 
-    response = ResponseManager.create_response_200("", "text,plain")
+    response = ResponseManager.create_response_200(session["username"], "text,plain")
     response = CookieManager.set_user_cookie_to_response(response, session['username'])
     return response
 
