@@ -9,7 +9,7 @@ function login(event) {
 
    let data = new FormData(document.getElementById("login-form"));
 
-    fetch("webapp/login/", {
+    fetch("ws/login/", {
         method: "POST",
         body: data
     }).then( response => {

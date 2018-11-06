@@ -35,7 +35,7 @@ function send_file(file){
     let data = new FormData();
     data.append('file', file);
 
-    fetch("webapp/files/add/", {
+    fetch("files/add/", {
         method: "POST",
         body: data
     })

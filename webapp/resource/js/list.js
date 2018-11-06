@@ -3,7 +3,7 @@ $(function(){
 });
 
 function get_item_list(){
-    fetch("webapp/files/list/", {
+    fetch("../dl/cholewp1/list/", {
         method: "GET",
     }).then( response => response.json()
     .then(data => {
@@ -33,7 +33,7 @@ function create_list(data){
 }
 
 function create_item(fileName){
-    return '<a download href="webapp/files/get/'
+    return '<a download href="dl/files/get/'
         + fileName
         + ' " class="list-group-item list-group-item-action well"><b>'
         + fileName

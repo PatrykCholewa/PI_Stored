@@ -9,7 +9,7 @@ def __create_user_jwt(username, expire):
     encode = jwt.encode(
         {
             "user": username,
-            "expires": expire.timestamp()
+            "exp": expire.timestamp()
         }, secret, "HS256")
     return encode
 
@@ -29,7 +29,8 @@ def set_user_cookie_to_response(response, username):
         __create_user_jwt(username, expire),
         max_age=300,
         expires=expire,
+        path="/cholewp1/dl/",
         secure=False,
-        httponly=False
+        httponly=True
     )
     return new_response
