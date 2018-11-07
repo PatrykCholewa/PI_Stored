@@ -35,7 +35,7 @@ def set_user_cookie_to_response(response, username):
         max_age=300,
         expires=expire,
         path="/cholewp1/dl/",
-        secure=False,
+        secure=True,
         httponly=True
     )
     return new_response
