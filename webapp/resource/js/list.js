@@ -18,7 +18,7 @@ function get_item_list_by_username(username){
         method: "GET",
     }).then( response => response.json()
     .then(data => {
-        create_list(data);
+        create_list(data, username);
         check_item_count();
     }));
 }
@@ -35,19 +35,20 @@ function check_item_count() {
     }
 }
 
-function create_list(data){
+function create_list(data, username){
     const files = data['files'];
     let innerHtml = "";
     for( let i = 0 ; i < files.length ; i++ ){
-        innerHtml = innerHtml + create_item(files[i]);
+        innerHtml = innerHtml + create_item(files[i], username);
     }
     $('#panel-list').html(innerHtml);
 }
 
-function create_item(fileName){
-    return '<a download href="dl/files/get/'
-        + fileName
-        + ' " class="list-group-item list-group-item-action well"><b>'
+function create_item(fileName, username){
+    let href = "../dl/" + username + /file/ + fileName;
+    return '<a download href="'
+        + href
+        + '" class="list-group-item list-group-item-action well"><b>'
         + fileName
         + '</b></a>'
 }

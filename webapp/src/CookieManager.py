@@ -14,14 +14,19 @@ def __create_user_jwt(username, expire):
     return encode
 
 
-def __create_timestamp_past_5_minutes():
-    expire = datetime.now()
-    expire = expire + timedelta(minutes=5)
-    return expire
+def __create_user_file_jwt(username, path, expire):
+    encode = jwt.encode(
+        {
+            "user": username,
+            "file": path,
+            "exp": expire.timestamp()
+        }, secret, "HS256")
+    return encode
 
 
 def set_user_cookie_to_response(response, username):
-    expire = __create_timestamp_past_5_minutes()
+    expire = datetime.now()
+    expire = expire + timedelta(minutes=5)
 
     new_response = response
     new_response.set_cookie(
