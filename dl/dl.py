@@ -1,4 +1,4 @@
-from flask import Flask, request, session
+from flask import Flask, request, flash
 from src import ResponseManager, CookieManager, UserFileManager
 
 app = Flask(__name__)
@@ -6,7 +6,7 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
     APPLICATION_ROOT="/cholewp1/dl/",
     REMEMBER_COOKIE_HTTPONLY=True,
-    # REMEMBER_COOKIE_SECURE=True
+    REMEMBER_COOKIE_SECURE=True
 )
 
 
@@ -40,24 +40,25 @@ def get_file(user, path):
         return ResponseManager.create_response_404()
 
 
-# @app.route('/cholewp1/z3/ws/files/add/', methods=['POST'])
-# def post_file():
-#     if is_not_logged():
-#         return ResponseManager.create_response_401()
-#
-#     if 'file' not in request.files:
-#         flash("No file part!")
-#         return ResponseManager.create_response_400()
-#
-#     file = request.files['file']
-#     if file.filename == '':
-#         flash('No selected file')
-#         return ResponseManager.create_response_400()
-#
-#     if UserFileManager.save_user_file(
-#             session['username'],
-#             file):
-#         return ResponseManager.create_response_200(None, None)
-#     else:
-#         return ResponseManager.create_response_403()
-#
+@app.route('/cholewp1/dl/<user>/add/', methods=['POST'])
+def post_file(user):
+    cookie = request.cookies.get("user")
+    if not validate_user_cookie(cookie, user):
+        return ResponseManager.create_response_401()
+
+    if 'file' not in request.files:
+        flash("No file part!")
+        return ResponseManager.create_response_400()
+
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        return ResponseManager.create_response_400()
+
+    if UserFileManager.save_user_file(
+            user,
+            file):
+        return ResponseManager.create_response_200(None, None)
+    else:
+        return ResponseManager.create_response_403()
+

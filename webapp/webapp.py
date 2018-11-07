@@ -117,9 +117,9 @@ def logout():
 
 @app.route('/cholewp1/webapp/ws/register/', methods=['POST'])
 def register():
-    # return ResponseManager.create_response_403()
-    new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
-    if new_user is not None:
-        return ResourceManager.send_html(__page_login)
-    else:
-        return ResponseManager.create_response_401()
+    return ResponseManager.create_response_403()
+    # new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
+    # if new_user is not None:
+    #     return ResourceManager.send_html(__page_login)
+    # else:
+    #     return ResponseManager.create_response_401()

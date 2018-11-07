@@ -32,10 +32,21 @@ function handle_file_drop(event){
 }
 
 function send_file(file){
+
+    fetch("cookie/user/", {
+        method: "GET"
+    }).then( response => response.text()
+    .then(username => {
+        let path = "../dl/" + username + "/add/";
+        act_sending_file(file, path);
+    }));
+}
+
+function act_sending_file(file, path){
     let data = new FormData();
     data.append('file', file);
 
-    fetch("files/add/", {
+    fetch(path, {
         method: "POST",
         body: data
     })
