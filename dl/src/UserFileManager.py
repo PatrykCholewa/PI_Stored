@@ -95,3 +95,9 @@ def save_user_file(user, file):
     __db.hset(__db_table_user_file, user, tuple(file_ids))
 
     return True
+
+
+if __name__ == '__main__':
+    __db.hset(__db_table_file, "t_1.txt", "file_61b14334X9c22X4308X8b6bX23069352d2d7")
+    __db.hset(__db_table_file, "t.txt", "file_2533c38dXb1bdX4157X9ed0X4972ae37ac4f")
+    __db.hset(__db_table_file, "t2.txt", "file_f49e12b9X9eb5X43c6X82baXa17f4911dff9")

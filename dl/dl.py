@@ -6,7 +6,7 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config.update(
     APPLICATION_ROOT="/cholewp1/dl/",
     REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=False
+    REMEMBER_COOKIE_SECURE=True
 )
 
 
