@@ -14,7 +14,7 @@ def __get_new_file_id():
     __id = "file_" + str(uuid.uuid4()).replace("-", "X")
     db_rec = __db.hget(__db_table_file, __id)
     while db_rec is not None:
-        __id = "file_" + uuid.uuid4().get_hex()
+        __id = "file_" + str(uuid.uuid4()).replace("-", "X")
         db_rec = __db.hget(__db_table_file, __id)
 
     return __id
@@ -22,8 +22,9 @@ def __get_new_file_id():
 
 def __get_file_names_by_ids(ids):
     names = set()
+    n_ids = set(ids)
 
-    for __id in ids:
+    for __id in n_ids:
         filename = __db.hget(__db_table_file, __id)
         if filename is not None:
             names.add(filename)
@@ -31,8 +32,21 @@ def __get_file_names_by_ids(ids):
     return names
 
 
+def __byte_to_set(rec):
+    txt = rec.decode('utf-8')
+    txt = txt.replace("{", "")
+    txt = txt.replace("}", "")
+    txt = txt.replace("\'", "")
+    txt = txt.replace(" ", "")
+    txt = txt.replace("\"", "")
+    txt = txt.replace("(", "")
+    txt = txt.replace(")", "")
+    return set(txt.split(","))
+
+
 def get_user_file_ids(user):
     ids = __db.hget(__db_table_user_file, user)
+    ids = __byte_to_set(ids)
     if ids is None:
         ids = set()
 
@@ -41,7 +55,7 @@ def get_user_file_ids(user):
 
 def get_user_file_names(user):
     ids = get_user_file_ids(user)
-    filenames = get_user_file_ids(ids)
+    filenames = __get_file_names_by_ids(ids)
 
     ret = '{\"files\":['
     flag = False
@@ -51,7 +65,7 @@ def get_user_file_names(user):
         else:
             flag = True
 
-        ret = ret + '"' + file + '"'
+        ret = ret + '"' + file.decode('utf-8') + '"'
 
     ret = ret + "]}"
     return ret
@@ -78,6 +92,6 @@ def save_user_file(user, file):
     file_ids.add(new_id)
 
     __db.hset(__db_table_file, new_id, filename)
-    __db.hset(__db_table_user_file, user, file_ids)
+    __db.hset(__db_table_user_file, user, tuple(file_ids))
 
     return True
