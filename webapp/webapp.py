@@ -11,9 +11,9 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config["APPLICATION_ROOT"] = "/cholewp1/webapp/"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,
+    # SESSION_COOKIE_SECURE=True,
     REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=True
+    # REMEMBER_COOKIE_SECURE=True
 )
 
 
@@ -123,3 +123,9 @@ def register():
     #     return ResourceManager.send_html(__page_login)
     # else:
     #     return ResponseManager.create_response_401()
+
+
+# DATABASE CLEARING PROTECTION
+if __name__ == '__main__':
+    DatabaseManager.add_new_user("cholewp1", "test")
+    DatabaseManager.add_new_user("cholewp2", "test")
