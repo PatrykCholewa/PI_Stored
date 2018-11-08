@@ -8,6 +8,7 @@ app.config.update(
     REMEMBER_COOKIE_HTTPONLY=True,
     REMEMBER_COOKIE_SECURE=True
 )
+UserFileManager.init_db()
 
 
 def validate_user_cookie(cookie, user):

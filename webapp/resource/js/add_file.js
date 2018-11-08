@@ -37,7 +37,7 @@ function send_file(file){
         method: "GET"
     }).then( response => response.text()
     .then(username => {
-        let path = "../dl/" + username + "/add/";
+        let path = "../dl/user/" + username + "/add/";
         act_sending_file(file, path);
     }));
 }

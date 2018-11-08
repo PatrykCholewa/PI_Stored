@@ -1,3 +1,4 @@
+import json
 import uuid
 
 from redis import Redis
@@ -21,13 +22,13 @@ def __get_new_file_id():
 
 
 def __get_file_names_by_ids(ids):
-    names = set()
+    names = {}
     n_ids = set(ids)
 
     for __id in n_ids:
-        filename = __db.hget(__db_table_file, __id)
+        filename = __db.hget(__db_table_file, __id).decode('utf-8')
         if filename is not None:
-            names.add(filename)
+            names[__id] = filename
 
     return names
 
@@ -46,26 +47,26 @@ def __byte_to_set(rec):
 
 def get_user_file_ids(user):
     ids = __db.hget(__db_table_user_file, user)
-    ids = __byte_to_set(ids)
     if ids is None:
         ids = set()
 
+    ids = __byte_to_set(ids)
     return ids
 
 
 def get_user_file_names(user):
     ids = get_user_file_ids(user)
-    filenames = __get_file_names_by_ids(ids)
+    files = __get_file_names_by_ids(ids)
 
     ret = '{\"files\":['
     flag = False
-    for file in filenames:
+    for file_id in files.keys():
         if flag:
             ret = ret + ","
         else:
             flag = True
 
-        ret = ret + '"' + file.decode('utf-8') + '"'
+        ret = ret + '[ "' + file_id + '", "' + files[file_id] + '" ]'
 
     ret = ret + "]}"
     return ret
@@ -97,7 +98,12 @@ def save_user_file(user, file):
     return True
 
 
-if __name__ == '__main__':
-    __db.hset(__db_table_file, "t_1.txt", "file_61b14334X9c22X4308X8b6bX23069352d2d7")
-    __db.hset(__db_table_file, "t.txt", "file_2533c38dXb1bdX4157X9ed0X4972ae37ac4f")
-    __db.hset(__db_table_file, "t2.txt", "file_f49e12b9X9eb5X43c6X82baXa17f4911dff9")
+def init_db():
+    __db.hset(__db_table_file, "file_61b14334X9c22X4308X8b6bX23069352d2d7", "t_1.txt")
+    __db.hset(__db_table_file, "file_2533c38dXb1bdX4157X9ed0X4972ae37ac4f", "t.txt")
+    __db.hset(__db_table_file, "file_f49e12b9X9eb5X43c6X82baXa17f4911dff9", "t2.txt")
+    __db.hset(__db_table_user_file, "cholewp1", (
+        "file_61b14334X9c22X4308X8b6bX23069352d2d7",
+        "file_2533c38dXb1bdX4157X9ed0X4972ae37ac4f",
+        "file_f49e12b9X9eb5X43c6X82baXa17f4911dff9"
+    ))
