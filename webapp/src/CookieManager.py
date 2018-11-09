@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 import jwt
 
 secret = b'soinGERG#25gappk2GWG32$#^ azg'
+secure = True
 
 
 def __create_user_jwt(username, expire):
@@ -35,7 +36,7 @@ def set_user_cookie_to_response(response, username):
         max_age=300,
         expires=expire,
         path="/cholewp1/dl/",
-        secure=True,
+        secure=secure,
         httponly=True
     )
     return new_response

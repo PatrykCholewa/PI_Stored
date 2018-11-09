@@ -123,3 +123,9 @@ def register():
     #     return ResourceManager.send_html(__page_login)
     # else:
     #     return ResponseManager.create_response_401()
+
+
+# DATABASE CLEARING PROTECTION
+if __name__ == '__main__':
+    DatabaseManager.add_new_user("cholewp1", "test")
+    DatabaseManager.add_new_user("cholewp2", "test")
