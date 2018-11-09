@@ -40,10 +40,7 @@ def get_file(file):
         return ResponseManager.create_response_401()
 
     try:
-        return ResponseManager.create_response_200(
-            UserFileManager.get_file(file),
-            'application/octet-stream'
-        )
+        return UserFileManager.get_file(file)
     except FileNotFoundError:
         return ResponseManager.create_response_404()
 

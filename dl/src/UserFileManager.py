@@ -1,6 +1,7 @@
 import json
 import uuid
 
+import flask
 from redis import Redis
 from werkzeug.utils import secure_filename
 
@@ -73,11 +74,11 @@ def get_user_file_names(user):
 
 
 def get_file(file_id):
-    file = open(__users_dir + file_id, "rb")
-    if file is None:
-        return None
-
-    return file
+    return flask.send_file(
+        filename_or_fp=__users_dir + file_id,
+        as_attachment=True,
+        attachment_filename=__db.hget(__db_table_file, file_id).decode('utf-8')
+    )
 
 
 def save_user_file(user, file):
