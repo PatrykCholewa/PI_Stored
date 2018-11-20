@@ -79,7 +79,7 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/webapp/rs/user/<string:user>/files/list/')
+@app.route('/cholewp1/webapp/rs/user/<string:user>/files/list/cookie/')
 def get_new_user_files_access_cookie(user):
     if is_not_logged():
         return ResponseManager.create_response_401()
@@ -91,6 +91,19 @@ def get_new_user_files_access_cookie(user):
 
     response = ResponseManager.create_response_200("OK", "text/plain")
     return CookieManager.set_file_cookie_to_response(response, file_list)
+
+
+@app.route('/cholewp1/webapp/rs/user/<string:user>/files/list/')
+def get_new_user_files_names(user):
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    file_list = DatabaseManager.get_user_file_names(user)
+
+    return ResponseManager.create_response_200(file_list, "application/json")
 
 
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
