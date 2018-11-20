@@ -11,9 +11,9 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config["APPLICATION_ROOT"] = "/cholewp1/webapp/"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_SECURE=False,
     REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=True
+    REMEMBER_COOKIE_SECURE=False
 )
 
 
@@ -79,14 +79,18 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/webapp/cookie/user/')
-def get_new_user_cookie():
+@app.route('/cholewp1/webapp/rs/user/<string:user>/files/list/')
+def get_new_user_files_access_cookie(user):
     if is_not_logged():
         return ResponseManager.create_response_401()
 
-    response = ResponseManager.create_response_200(session["username"], "text/plain")
-    response = CookieManager.set_user_cookie_to_response(response, session['username'])
-    return response
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    file_list = DatabaseManager.get_user_file_ids(user)
+
+    response = ResponseManager.create_response_200("OK", "text/plain")
+    return CookieManager.set_file_cookie_to_response(response, file_list)
 
 
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
@@ -98,7 +102,6 @@ def login():
         session['sid'] = sid
 
         response = ResourceManager.send_html(__page_list)
-        response = CookieManager.set_user_cookie_to_response(response, session['username'])
         return response
     else:
         ResponseManager.create_response_401()
@@ -129,3 +132,4 @@ def register():
 if __name__ == '__main__':
     DatabaseManager.add_new_user("cholewp1", "test")
     DatabaseManager.add_new_user("cholewp2", "test")
+    DatabaseManager.init_db()

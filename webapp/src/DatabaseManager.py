@@ -1,12 +1,80 @@
 import uuid
 
+from werkzeug.utils import secure_filename
+
 from src.UserClass import UserClass
 from redis import Redis
-
 
 __db = Redis()
 __db_table_users = "cholewp1:webapp:v4"
 __db_table_sessions = "cholewp1:webapp:v4:session"
+__db_table_user_file = "cholewp1:dl:v4:user_file"
+__db_table_file = "cholewp1:dl:v4:file"
+
+
+# FILE ACCESS
+def __get_new_file_id():
+    __id = "file_" + str(uuid.uuid4()).replace("-", "X")
+    db_rec = __db.hget(__db_table_file, __id)
+    while db_rec is not None:
+        __id = "file_" + str(uuid.uuid4()).replace("-", "X")
+        db_rec = __db.hget(__db_table_file, __id)
+
+    return __id
+
+
+def get_file_name_by_id(__id):
+    return __db.hget(__db_table_file, __id).decode('utf-8')
+
+
+def save_user_file_to_db(user, file):
+    file_ids = get_user_file_ids(user)
+    if len(file_ids) > 4:
+        return None
+
+    filename = secure_filename(file.filename)
+
+    new_id = __get_new_file_id()
+
+    file_ids.add(new_id)
+
+    __db.hset(__db_table_file, new_id, filename)
+    __db.hset(__db_table_user_file, user, tuple(file_ids))
+
+    return new_id
+
+
+def __get_file_names_by_ids(ids):
+    names = {}
+    n_ids = set(ids)
+
+    for __id in n_ids:
+        filename = get_file_name_by_id(__id)
+        if filename is not None:
+            names[__id] = filename
+
+    return names
+
+
+def __byte_to_set(rec):
+    txt = rec.decode('utf-8')
+    txt = txt.replace("{", "")
+    txt = txt.replace("}", "")
+    txt = txt.replace("\'", "")
+    txt = txt.replace(" ", "")
+    txt = txt.replace("\"", "")
+    txt = txt.replace("(", "")
+    txt = txt.replace(")", "")
+    return set(txt.split(","))
+
+
+def get_user_file_ids(user):
+    ids = __db.hget(__db_table_user_file, user)
+    if ids is None:
+        ids = set()
+
+    ids = __byte_to_set(ids)
+    return ids
 
 
 def get_user_by_username(username):
@@ -20,6 +88,25 @@ def get_user_by_username(username):
     return None
 
 
+def get_user_file_names(user):
+    ids = get_user_file_ids(user)
+    files = __get_file_names_by_ids(ids)
+
+    ret = '{\"files\":['
+    flag = False
+    for file_id in files.keys():
+        if flag:
+            ret = ret + ","
+        else:
+            flag = True
+
+        ret = ret + '[ "' + file_id + '", "' + files[file_id] + '" ]'
+
+    ret = ret + "]}"
+    return ret
+
+
+# USER AND SESSION ACCESS
 def _add_user_to_db(user):
     db_user = get_user_by_username(user.username)
     if db_user is not None:
@@ -66,3 +153,14 @@ def check_session_valid(username, sid):
 
 def delete_session(sid):
     __db.hdel(__db_table_sessions, sid)
+
+
+def init_db():
+    __db.hset(__db_table_file, "file_61b14334X9c22X4308X8b6bX23069352d2d7", "t_1.txt")
+    __db.hset(__db_table_file, "file_2533c38dXb1bdX4157X9ed0X4972ae37ac4f", "t.txt")
+    __db.hset(__db_table_file, "file_f49e12b9X9eb5X43c6X82baXa17f4911dff9", "t2.txt")
+    __db.hset(__db_table_user_file, "cholewp1", (
+        "file_61b14334X9c22X4308X8b6bX23069352d2d7",
+        "file_2533c38dXb1bdX4157X9ed0X4972ae37ac4f",
+        "file_f49e12b9X9eb5X43c6X82baXa17f4911dff9"
+    ))
