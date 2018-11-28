@@ -37,7 +37,7 @@ function send_file(file){
     const pathParts = path.split("/");
     let userParam = "";
 
-    for( let i = 0; i < pathParts.length ; i++ ){
+    for( let i = 0; i < pathParts.length; i++ ){
         if( pathParts[i] === "user" ){
             userParam = pathParts[i+1];
             break;
@@ -47,12 +47,12 @@ function send_file(file){
     let data = new FormData();
     data.append('file', file);
 
-    fetch("rs/user/" + userParam + "/files/add/cookie/", {
+    fetch("file/add", {
         method: "POST",
         body: data
     }).then( response => response.json()
     .then(data => {
-        let path = "../dl/file/" + data['file_id'];
+        let path = "../../../dl/file/" + data['file_id'];
         act_sending_file(file, path);
     }));
 }
@@ -76,7 +76,7 @@ function act_sending_file(file, path, fileJson){
 }
 
 function confirm_sending_file(fileJson){
-    fetch("/webapp/rs/user/"+fileJson['user']+"/files/add/confirm/"+fileJson['file_id']+"/"+fileJson['filename'], {
+    fetch("file/"+fileJson['file_id']+"/confirm/"+fileJson['filename'], {
         method: "POST",
         body: data
     })

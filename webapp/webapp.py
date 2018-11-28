@@ -81,7 +81,7 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/webapp/rs/user/<string:user>/files/list/', methods=['GET'])
+@app.route('/cholewp1/webapp/user/<string:user>/files/list/', methods=['GET'])
 def get_user_files(user):
     if is_not_logged():
         return ResponseManager.create_response_401()
@@ -93,7 +93,7 @@ def get_user_files(user):
     return CookieManager.set_file_cookie_to_response(response, DatabaseManager.get_user_file_ids(user))
 
 
-@app.route('/cholewp1/webapp/rs/user/<string:user>/files/add/cookie/', methods=['POST'])
+@app.route('/cholewp1/webapp/user/<string:user>/file/add', methods=['POST'])
 def get_add_file_access(user):
     if is_not_logged():
         return ResponseManager.create_response_401()
@@ -117,7 +117,7 @@ def get_add_file_access(user):
     return CookieManager.set_file_cookie_to_response(response, [new_file_id])
 
 
-@app.route('/cholewp1/webapp/rs/user/<string:user>/files/add/confirm/<string:file_id>/<string:filename>', methods=['POST'])
+@app.route('/cholewp1/webapp/user/<string:user>/file/<string:file_id>/confirm/<string:filename>', methods=['POST'])
 def add_file_confirm(user, file_id, filename):
     if is_not_logged():
         return ResponseManager.create_response_401()
