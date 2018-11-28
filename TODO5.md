@@ -1,4 +1,9 @@
-﻿1. dodać linki do wspódzielenia plików
+﻿<del>
+
+1. dodać linki do wspódzielenia plików
+
+</del>
+
 2. powiadomienia - na każdej instancji powiadomienie, że dodano nowy plik
     * na iSODzie jest w materiałach kod, na którym można się wzorować
     * long-polling lub SSE
