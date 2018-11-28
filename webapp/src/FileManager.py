@@ -96,7 +96,10 @@ def get_user_file_names(user):
         else:
             flag = True
 
-        ret = ret + '[ "' + file_id + '", "' + files[file_id] + '" ]'
+        ret = ret + '[ "'
+        ret = ret + file_id + '", "'
+        ret = ret + files[file_id] + '", "'
+        ret = ret + get_file_sharelink(file_id) + '" ]'
 
     ret = ret + "]}"
     return ret

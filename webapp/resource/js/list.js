@@ -45,7 +45,7 @@ function create_list(data){
     let innerHtml = "";
     for( let i = 0 ; i < files.length ; i++ ){
         const file = files[i];
-        innerHtml = innerHtml + create_item(file[0], file[1]);
+        innerHtml = innerHtml + create_item(file[0], file[1], file[2]);
     }
     $('#panel-list').html(innerHtml);
 }
