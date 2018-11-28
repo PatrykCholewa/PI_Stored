@@ -50,11 +50,31 @@ function create_list(data){
     $('#panel-list').html(innerHtml);
 }
 
-function create_item(file_id, filename){
+function create_item(file_id, filename, shareLinkButtonActive){
     let href = "../../../dl/file/" + file_id + "/name/" + filename;
-    return '<a download href="'
-        + href
-        + '" class="list-group-item list-group-item-action well"><b>'
-        + filename
-        + '</b></a>'
+    let activeClass = shareLinkButtonActive === true ? "active" : "disabled";
+
+    return `
+<div class="well">
+    <div class="col-lg-6">
+        <a download href="${href}" class="btn-block">
+            <button type="button" class="btn btn-default btn-lg btn-block" aria-label="Left Align">
+                <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                <b>${filename}</b>
+            </button>
+        </a> 
+    </div>
+    <div class="col-lg-6">
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Sharelink..." readonly>
+            <span class="input-group-btn">
+                <button class="btn btn-default ${activeClass}" type="button">
+                    <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                    Create sharelink!
+                </button>
+            </span>
+        </div>
+    </div>
+</div>
+`
 }
