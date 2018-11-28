@@ -3,17 +3,19 @@ $(function(){
 });
 
 function get_item_list(){
-    fetch("cookie/user/", {
-        method: "GET"
-    }).then(response => response.text()
-        .then( username => {
-        get_item_list_by_username(username);
-    }));
 
-}
+    const windowPath = window.location.pathname;
+    const pathParts = windowPath.split("/");
+    let userParam = "";
 
-function get_item_list_by_username(username){
-    let path = "../dl/user/" + username + "/list/";
+    for( let i = 0; i < pathParts.length ; i++ ){
+        if( pathParts[i] === "user" ){
+            userParam = pathParts[i+1];
+            break;
+        }
+    }
+
+    let path = "../../rs/user/"+userParam+"/files/list/";
     fetch(path, {
         method: "GET",
         headers: {
@@ -21,7 +23,7 @@ function get_item_list_by_username(username){
         }
     }).then( response => response.json()
     .then(data => {
-        create_list(data, username);
+        create_list(data, userParam);
         check_item_count();
     }));
 }

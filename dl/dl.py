@@ -30,10 +30,10 @@ def get_file(file_id, filename):
         return ResponseManager.create_response_404()
 
 
-@app.route('/cholewp1/dl/user/<string:user>/add/', methods=['POST'])
-def post_file(user):
-    cookie = request.cookies.get("user")
-    if not validate_user_cookie(cookie, user):
+@app.route('/cholewp1/dl/file/<string:file_id>', methods=['POST'])
+def post_file(file_id):
+    cookie = request.cookies.get("file")
+    if not validate_file_cookie(cookie, file_id):
         return ResponseManager.create_response_401()
 
     if 'file' not in request.files:
@@ -46,8 +46,8 @@ def post_file(user):
         return ResponseManager.create_response_400()
 
     if UserFileManager.save_user_file(
-            user,
-            file):
+            file,
+            file_id):
         return ResponseManager.create_response_200(None, None)
     else:
         return ResponseManager.create_response_403()

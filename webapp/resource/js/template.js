@@ -1,9 +1,9 @@
 $(function(){
-    $('#header').load('template/header.html');
+    $('#header').load('/cholewp1/webapp/template/header.html');
 });
 
 function logout(){
-    fetch("ws/logout/", {
+    fetch("/cholewp1/webapp/ws/logout/", {
         method: "POST"
     }).then( response => {
         window.location = "login";

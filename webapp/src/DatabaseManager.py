@@ -13,7 +13,16 @@ __db_table_file = "cholewp1:dl:v4:file"
 
 
 # FILE ACCESS
-def __get_new_file_id():
+def check_file_count(user):
+    file_ids = get_user_file_ids(user)
+    if len(file_ids) > 4:
+        return False
+    return True
+
+
+def get_new_file_id(user):
+    if not check_file_count(user):
+        return None
     __id = "file_" + str(uuid.uuid4()).replace("-", "X")
     db_rec = __db.hget(__db_table_file, __id)
     while db_rec is not None:
@@ -27,21 +36,17 @@ def get_file_name_by_id(__id):
     return __db.hget(__db_table_file, __id).decode('utf-8')
 
 
-def save_user_file_to_db(user, file):
+def save_user_file_to_db(user, file_id, filename):
     file_ids = get_user_file_ids(user)
     if len(file_ids) > 4:
         return None
 
-    filename = secure_filename(file.filename)
+    file_ids.add(file_id)
 
-    new_id = __get_new_file_id()
-
-    file_ids.add(new_id)
-
-    __db.hset(__db_table_file, new_id, filename)
+    __db.hset(__db_table_file, file_id, filename)
     __db.hset(__db_table_user_file, user, tuple(file_ids))
 
-    return new_id
+    return file_id
 
 
 def __get_file_names_by_ids(ids):
@@ -72,8 +77,9 @@ def get_user_file_ids(user):
     ids = __db.hget(__db_table_user_file, user)
     if ids is None:
         ids = set()
+    else:
+        ids = __byte_to_set(ids)
 
-    ids = __byte_to_set(ids)
     return ids
 
 
