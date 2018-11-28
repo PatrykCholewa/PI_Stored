@@ -8,14 +8,16 @@ __page_register = "register.html"
 __page_list = "list.html"
 __page_add_file = "add_file.html"
 
+__redirect_link_prefix = "https://pi.iem.pw.edu.pl/cholewp1/dl/file/"
+
 app = Flask(__name__)
 app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config["APPLICATION_ROOT"] = "/cholewp1/webapp/"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=False,
+    SESSION_COOKIE_SECURE=True,
     REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=False
+    REMEMBER_COOKIE_SECURE=True
 )
 
 
@@ -148,19 +150,17 @@ def share_file(user, file_id):
     return ResponseManager.create_response_200(None, None)
 
 
-# @app.route('/cholewp1/webapp/share/file/<string:file_id>', methods=['GET'])
-# def get_shared_file(file_id):
-    # if is_not_logged():
-    #     return ResponseManager.create_response_401()
-    #
-    # if user != session['username']:
-    #     return ResponseManager.create_response_400()
+@app.route('/cholewp1/webapp/share/file/<string:file_id>', methods=['GET'])
+def get_shared_file(file_id):
 
-    # res = DatabaseManager.save_user_file_to_db(user, file_id, filename), "text/plain"
-    # if res:
-    #     return ResponseManager.create_response_200("OK", "text/plain")
-    # else:
-    #     return ResponseManager.create_response_403()
+    res = FileManager.is_file_shared(file_id)
+
+    if res:
+        filename = FileManager.get_file_name_by_id(file_id)
+        response = ResponseManager.create_response_303(__redirect_link_prefix + file_id + "/name/" + filename)
+        return CookieManager.set_file_cookie_to_response(response, [file_id])
+    else:
+        return ResponseManager.create_response_403()
 
 
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])

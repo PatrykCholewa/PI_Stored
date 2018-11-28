@@ -24,21 +24,11 @@ function get_item_list(){
     }).then( response => response.json()
     .then(data => {
         create_list(data, userParam);
-        check_item_count();
     }));
 }
 
 
-function check_item_count() {
-    const items = $(".list-group-item");
-    if( items.length > 4 ){
-        const btn = $("#add_file_btn")
-        btn.attr("disabled", true);
-        btn.click(function(ev){
-            ev.preventDefault();
-        });
-    }
-}
+
 
 function create_list(data){
     const files = data['files'];
@@ -48,6 +38,17 @@ function create_list(data){
         innerHtml = innerHtml + create_item(file[0], file[1], file[2]);
     }
     $('#panel-list').html(innerHtml);
+    disable_adding_files_by_count(files.length);
+}
+
+function disable_adding_files_by_count(count) {
+    if( count > 4 ){
+        const btn = $("#add_file_btn");
+        btn.attr("disabled", true);
+        btn.click(function(ev){
+            ev.preventDefault();
+        });
+    }
 }
 
 function create_item(file_id, filename, sharelink){
@@ -59,7 +60,7 @@ function create_item(file_id, filename, sharelink){
 
     return `
 <div class="well">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <a download href="${href}" class="btn-block">
             <button type="button" class="btn btn-default btn-lg btn-block" aria-label="Left Align">
                 <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
@@ -67,7 +68,7 @@ function create_item(file_id, filename, sharelink){
             </button>
         </a> 
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <div class="input-group">
             <input type="text" class="form-control" placeholder="Sharelink..." readonly value="${sharelink}">
             <span class="input-group-btn">
