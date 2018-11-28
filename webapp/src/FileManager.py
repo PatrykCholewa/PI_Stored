@@ -1,18 +1,15 @@
 import uuid
 
-from werkzeug.utils import secure_filename
-
-from src.UserClass import UserClass
 from redis import Redis
 
 __db = Redis()
-__db_table_users = "cholewp1:webapp:v4"
-__db_table_sessions = "cholewp1:webapp:v4:session"
 __db_table_user_file = "cholewp1:dl:v4:user_file"
 __db_table_file = "cholewp1:dl:v4:file"
+__db_table_shared_file = "cholewp1:dl:v5:shared_file"
+
+__sharelink_prefix = "https://localhost:5000/webapp/share/file/"
 
 
-# FILE ACCESS
 def check_file_count(user):
     file_ids = get_user_file_ids(user)
     if len(file_ids) > 5:
@@ -87,17 +84,6 @@ def get_user_file_ids(user):
     return ids
 
 
-def get_user_by_username(username):
-    db_record = __db.hget(__db_table_users, username)
-    if db_record is None:
-        return None
-    user = UserClass(db_record.decode('utf-8'))
-    if user.username == username:
-        return user
-
-    return None
-
-
 def get_user_file_names(user):
     ids = get_user_file_ids(user)
     files = __get_file_names_by_ids(ids)
@@ -116,53 +102,23 @@ def get_user_file_names(user):
     return ret
 
 
-# USER AND SESSION ACCESS
-def _add_user_to_db(user):
-    db_user = get_user_by_username(user.username)
-    if db_user is not None:
+def is_file_shared(file_id):
+    res = __db.hget(__db_table_shared_file, file_id)
+    if res is None:
         return False
     else:
-        dbrecord = user.to_dbrecord()
-        __db.hset(__db_table_users, user.username, dbrecord)
         return True
 
 
-def add_new_user(username, password):
-    user = UserClass.create_user(username, password)
-    if _add_user_to_db(user):
-        return user
-    else:
-        return None
+def get_file_sharelink(file_id):
+    if not is_file_shared(file_id):
+        return ""
+
+    return __db.hget(__db_table_shared_file, file_id).decode('utf-8')
 
 
-def authenticate_user(username, password):
-    user = get_user_by_username(username)
-    if user is None:
-        return False
-
-    if user.check_password(password):
-        return True
-    else:
-        return False
-
-
-def create_new_session(username):
-    sid = str(uuid.uuid4())
-    __db.hset(__db_table_sessions, username, sid)
-    return sid
-
-
-def check_session_valid(username, sid):
-    dbsid = __db.hget(__db_table_sessions, username).decode('utf-8')
-    if dbsid is None:
-        return False
-    if dbsid == sid:
-        return True
-    return False
-
-
-def delete_session(sid):
-    __db.hdel(__db_table_sessions, sid)
+def set_file_shared(file_id):
+    __db.hset(__db_table_shared_file, file_id, __sharelink_prefix + file_id)
 
 
 def init_db():
