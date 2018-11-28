@@ -1,4 +1,6 @@
-from flask import Flask, request, session
+from flask import Flask, request, session, flash
+from werkzeug.utils import secure_filename
+
 from src import ResourceManager, DatabaseManager, ResponseManager, CookieManager
 
 __page_login = "login.html"
@@ -43,16 +45,16 @@ def send_html_register():
     # return ResourceManager.send_html(__page_register)
 
 
-@app.route('/cholewp1/webapp/list')
-def send_html_list():
+@app.route('/cholewp1/webapp/user/<string:username>/list')
+def send_html_list(username):
     if is_not_logged():
         return ResponseManager.create_response_401()
 
     return ResourceManager.send_html(__page_list)
 
 
-@app.route('/cholewp1/webapp/add_file')
-def send_html_add_file():
+@app.route('/cholewp1/webapp/user/<string:username>/add_file')
+def send_html_add_file(username):
     if is_not_logged():
         return ResponseManager.create_response_401()
 
@@ -79,14 +81,55 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/webapp/cookie/user/')
-def get_new_user_cookie():
+@app.route('/cholewp1/webapp/user/<string:user>/file/list', methods=['GET'])
+def get_user_files(user):
     if is_not_logged():
         return ResponseManager.create_response_401()
 
-    response = ResponseManager.create_response_200(session["username"], "text/plain")
-    response = CookieManager.set_user_cookie_to_response(response, session['username'])
-    return response
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    response = ResponseManager.create_response_200(DatabaseManager.get_user_file_names(user), "application/json")
+    return CookieManager.set_file_cookie_to_response(response, DatabaseManager.get_user_file_ids(user))
+
+
+@app.route('/cholewp1/webapp/user/<string:user>/file/add', methods=['POST'])
+def get_add_file_access(user):
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    if 'file' not in request.files:
+        flash("No file part!")
+        return ResponseManager.create_response_400()
+
+    file = request.files['file']
+    if file.filename == '':
+        flash('No selected file')
+        return ResponseManager.create_response_400()
+
+    new_file_id = DatabaseManager.get_new_file_id(user)
+
+    response = "{\"user\":\""+user+"\",\"file_id\":\""+new_file_id+"\",\"filename\":\""+secure_filename(file.filename)+"\"}"
+    response = ResponseManager.create_response_200(response, "application/json")
+    return CookieManager.set_file_cookie_to_response(response, [new_file_id])
+
+
+@app.route('/cholewp1/webapp/user/<string:user>/file/<string:file_id>/confirm/<string:filename>', methods=['POST'])
+def add_file_confirm(user, file_id, filename):
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    res = DatabaseManager.save_user_file_to_db(user, file_id, filename), "text/plain"
+    if res:
+        return ResponseManager.create_response_200("OK", "text/plain")
+    else:
+        return ResponseManager.create_response_403()
 
 
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
@@ -98,7 +141,6 @@ def login():
         session['sid'] = sid
 
         response = ResourceManager.send_html(__page_list)
-        response = CookieManager.set_user_cookie_to_response(response, session['username'])
         return response
     else:
         ResponseManager.create_response_401()
@@ -117,15 +159,17 @@ def logout():
 
 @app.route('/cholewp1/webapp/ws/register/', methods=['POST'])
 def register():
-    return ResponseManager.create_response_403()
-    # new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
-    # if new_user is not None:
-    #     return ResourceManager.send_html(__page_login)
-    # else:
-    #     return ResponseManager.create_response_401()
+    # return ResponseManager.create_response_403()
+    # AVAILABLE BECAUSE OF OFTEN DB CLEARING
+    new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
+    if new_user is not None:
+        return ResourceManager.send_html(__page_login)
+    else:
+        return ResponseManager.create_response_401()
 
 
 # DATABASE CLEARING PROTECTION
 if __name__ == '__main__':
     DatabaseManager.add_new_user("cholewp1", "test")
     DatabaseManager.add_new_user("cholewp2", "test")
+    DatabaseManager.init_db()
