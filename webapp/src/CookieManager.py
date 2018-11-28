@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 import jwt
 
 secret = b'soinGERG#25gappk2GWG32$#^ azg'
-secure = False
+secure = True
 
 
 def __create_file_jwt(file_list, expire):

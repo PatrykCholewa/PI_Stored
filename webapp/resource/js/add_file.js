@@ -53,7 +53,7 @@ function send_file(file){
     }).then( response => response.json()
     .then(data => {
         let path = "../../../dl/file/" + data['file_id'];
-        act_sending_file(file, path);
+        act_sending_file(file, path, data);
     }));
 }
 
@@ -78,7 +78,6 @@ function act_sending_file(file, path, fileJson){
 function confirm_sending_file(fileJson){
     fetch("file/"+fileJson['file_id']+"/confirm/"+fileJson['filename'], {
         method: "POST",
-        body: data
     })
     .then(response => {
         if( response.ok ){

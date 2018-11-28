@@ -13,9 +13,9 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config["APPLICATION_ROOT"] = "/cholewp1/webapp/"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=False,
+    SESSION_COOKIE_SECURE=True,
     REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=False
+    REMEMBER_COOKIE_SECURE=True
 )
 
 
@@ -81,7 +81,7 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/webapp/user/<string:user>/files/list/', methods=['GET'])
+@app.route('/cholewp1/webapp/user/<string:user>/file/list', methods=['GET'])
 def get_user_files(user):
     if is_not_logged():
         return ResponseManager.create_response_401()
@@ -125,7 +125,11 @@ def add_file_confirm(user, file_id, filename):
     if user != session['username']:
         return ResponseManager.create_response_400()
 
-    return ResponseManager.create_response_200(DatabaseManager.save_user_file_to_db(user, file_id, filename), "text/plain")
+    res = DatabaseManager.save_user_file_to_db(user, file_id, filename), "text/plain"
+    if res:
+        return ResponseManager.create_response_200("OK", "text/plain")
+    else:
+        return ResponseManager.create_response_403()
 
 
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
@@ -155,12 +159,13 @@ def logout():
 
 @app.route('/cholewp1/webapp/ws/register/', methods=['POST'])
 def register():
-    return ResponseManager.create_response_403()
-    # new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
-    # if new_user is not None:
-    #     return ResourceManager.send_html(__page_login)
-    # else:
-    #     return ResponseManager.create_response_401()
+    # return ResponseManager.create_response_403()
+    # AVAILABLE BECAUSE OF OFTEN DB CLEARING
+    new_user = DatabaseManager.add_new_user(request.form['user-id'], request.form['password'])
+    if new_user is not None:
+        return ResourceManager.send_html(__page_login)
+    else:
+        return ResponseManager.create_response_401()
 
 
 # DATABASE CLEARING PROTECTION

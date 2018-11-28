@@ -15,7 +15,7 @@ __db_table_file = "cholewp1:dl:v4:file"
 # FILE ACCESS
 def check_file_count(user):
     file_ids = get_user_file_ids(user)
-    if len(file_ids) > 4:
+    if len(file_ids) > 5:
         return False
     return True
 
@@ -33,20 +33,24 @@ def get_new_file_id(user):
 
 
 def get_file_name_by_id(__id):
-    return __db.hget(__db_table_file, __id).decode('utf-8')
+    s = __db.hget(__db_table_file, __id)
+    try:
+        return s.decode('utf-8')
+    except Exception as e:
+        print(e)
+        return None
 
 
 def save_user_file_to_db(user, file_id, filename):
     file_ids = get_user_file_ids(user)
-    if len(file_ids) > 4:
-        return None
-
+    if len(file_ids) > 5:
+        return False
     file_ids.add(file_id)
 
     __db.hset(__db_table_file, file_id, filename)
     __db.hset(__db_table_user_file, user, tuple(file_ids))
 
-    return file_id
+    return True
 
 
 def __get_file_names_by_ids(ids):

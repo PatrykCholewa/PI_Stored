@@ -18,7 +18,7 @@ def validate_file_cookie(cookie, file):
     return cookie is not None and CookieManager.validate_file_by_jwt(cookie, file)
 
 
-@app.route('/cholewp1/dl/file/get/<string:file_id>/name/<string:filename>/', methods=['GET'])
+@app.route('/cholewp1/dl/file/<string:file_id>/name/<string:filename>/', methods=['GET'])
 def get_file(file_id, filename):
     cookie = request.cookies.get("file")
     if not validate_file_cookie(cookie, file_id):

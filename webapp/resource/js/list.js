@@ -15,7 +15,7 @@ function get_item_list(){
         }
     }
 
-    let path = "../../rs/user/"+userParam+"/files/list/";
+    let path = "file/list";
     fetch(path, {
         method: "GET",
         headers: {
@@ -51,7 +51,7 @@ function create_list(data){
 }
 
 function create_item(file_id, filename){
-    let href = "../dl/file/" + file_id;
+    let href = "../../../dl/file/" + file_id + "/name/" + filename;
     return '<a download href="'
         + href
         + '" class="list-group-item list-group-item-action well"><b>'
