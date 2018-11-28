@@ -50,9 +50,12 @@ function create_list(data){
     $('#panel-list').html(innerHtml);
 }
 
-function create_item(file_id, filename, shareLinkButtonActive){
+function create_item(file_id, filename, sharelink){
     let href = "../../../dl/file/" + file_id + "/name/" + filename;
-    let activeClass = shareLinkButtonActive === true ? "active" : "disabled";
+    if(sharelink === undefined){
+        sharelink = "";
+    }
+    let activeClass = sharelink === "" ? "active" : "disabled";
 
     return `
 <div class="well">
@@ -66,9 +69,9 @@ function create_item(file_id, filename, shareLinkButtonActive){
     </div>
     <div class="col-lg-6">
         <div class="input-group">
-            <input type="text" class="form-control" placeholder="Sharelink..." readonly>
+            <input type="text" class="form-control" placeholder="Sharelink..." readonly value="${sharelink}">
             <span class="input-group-btn">
-                <button class="btn btn-default ${activeClass}" type="button">
+                <button class="btn btn-default ${activeClass}" type="button" onclick="generate_sharelink('${file_id}')">
                     <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
                     Create sharelink!
                 </button>
@@ -77,4 +80,13 @@ function create_item(file_id, filename, shareLinkButtonActive){
     </div>
 </div>
 `
+}
+
+function generate_sharelink(file_id){
+    let path = `file/${file_id}/share`;
+    fetch(path, {
+        method: "POST",
+    }).then( response => {
+        get_item_list();
+    });
 }

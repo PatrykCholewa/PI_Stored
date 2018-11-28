@@ -132,6 +132,21 @@ def add_file_confirm(user, file_id, filename):
         return ResponseManager.create_response_403()
 
 
+@app.route('/cholewp1/webapp/user/<string:user>/file/<string:file_id>/share', methods=['POST'])
+def share_file(user, file_id):
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    # res = DatabaseManager.save_user_file_to_db(user, file_id, filename), "text/plain"
+    # if res:
+    #     return ResponseManager.create_response_200("OK", "text/plain")
+    # else:
+    #     return ResponseManager.create_response_403()
+
+
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
 def login():
     username = request.form['user-id']
