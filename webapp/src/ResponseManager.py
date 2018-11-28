@@ -13,6 +13,12 @@ def create_response_200(content, content_type):
     return _create_response(content, content_type, 200, "200 OK")
 
 
+def create_response_303(redirect):
+    resp = _create_response(redirect, "text/plain", 303, "303 See Other")
+    resp.headers.add("Location", redirect)
+    return resp
+
+
 def create_response_401():
     return abort(401)
 
