@@ -14,7 +14,7 @@ function login(event) {
         body: data
     }).then( response => {
         if (response.ok) {
-            window.location = "list";
+            window.location = "user/" + $("#user-id").val() + "/list";
         } else {
             $("#login-panel").addClass("panel-danger");
             $("#login-panel-heading").text("Invalid user ID or password!");
