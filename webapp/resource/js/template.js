@@ -6,7 +6,7 @@ function logout(){
     fetch("/cholewp1/webapp/ws/logout/", {
         method: "POST"
     }).then( response => {
-        window.location = "login";
+        window.location = "/cholewp1/webapp";
     });
     return false;
 }
