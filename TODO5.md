@@ -7,7 +7,9 @@
       najwyżej 2s po dodaniu pliku.  
 
 <del>    
+   
 3. Zrobić poprawki do wersji v4
     * to `webapp` posiada listę plików
     * to `webapp` generuje uprawnienia do tej listy plików 
+    
 </del>
