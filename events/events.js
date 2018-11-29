@@ -18,13 +18,14 @@ server = http.createServer( (request, response) => {
         response.end();
     } else if (request.url.match('/events/listen/')) {
         response.writeHead(200, {
+            'Access-Control-Allow-Origin': '*',
             'Connection': 'keep-alive',
             'Content-Type': 'text/event-stream',
             'Cache-Control': 'no-cache'
         });
         setInterval(() => {
             let resp = dict[userParam] === true;
-            response.write(`event: ${resp}`);
+            response.write(`data: ${resp}`);
             response.write("\n\n");
             if( resp === true ){
                 setTimeout(() => dict[userParam] = false, 3000);

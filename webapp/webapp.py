@@ -15,9 +15,9 @@ app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
 app.config["APPLICATION_ROOT"] = "/cholewp1/webapp/"
 app.config.update(
     SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,
+    # SESSION_COOKIE_SECURE=True,
     REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=True
+    # REMEMBER_COOKIE_SECURE=True
 )
 
 
