@@ -25,10 +25,10 @@ server = http.createServer( (request, response) => {
         });
         setInterval(() => {
             let resp = dict[userParam] === true;
-            response.write(`data: ${resp}`);
-            response.write("\n\n");
-            if( resp === true ){
-                setTimeout(() => dict[userParam] = false, 3000);
+            if(resp){
+                response.write(`data: ${resp}`);
+                response.write("\n\n");
+                dict[userParam] = false;
             }
         }, 1000);
 

@@ -101,8 +101,10 @@ function generate_sharelink(file_id){
 
 function listen_file_upload() {
     eventSource = new EventSource(event_host + "listen/user/" + userParam);
-    console.log(eventSource);
     eventSource.addEventListener('message', (e) => {
         console.log("message: " + e.data);
+        if(e.data === 'true'){
+            $.notify("File uploaded");
+        }
     });
 }
