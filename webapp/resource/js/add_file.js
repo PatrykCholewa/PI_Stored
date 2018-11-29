@@ -88,3 +88,30 @@ function confirm_sending_file(fileJson){
         }
     });
 }
+
+function set_user_param(){
+    const windowPath = window.location.pathname;
+    const pathParts = windowPath.split("/");
+
+    for( let i = 0; i < pathParts.length ; i++ ){
+        if( pathParts[i] === "user" ){
+            userParam = pathParts[i+1];
+            break;
+        }
+    }
+}
+
+function listen_file_upload() {
+    eventSource = new EventSource(event_host + "listen/user/" + userParam);
+    eventSource.addEventListener('message', (e) => {
+        console.log("message: " + e.data);
+        if(e.data === 'true'){
+            $.notify("File uploaded",
+                {
+                    className: "success",
+                    autoHide: false,
+                    globalPosition: 'bottom right'
+                });
+        }
+    });
+}

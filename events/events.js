@@ -7,6 +7,8 @@ server = http.createServer( (request, response) => {
     const pathParts = request.url.split("/");
     let userParam = "";
 
+    console.log(request.url);
+
     for( let i = 0; i < pathParts.length ; i++ ){
         if( pathParts[i] === "user" ){
             userParam = pathParts[i+1];

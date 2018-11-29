@@ -1,12 +1,7 @@
 $(function(){
     set_user_param();
     get_item_list();
-    listen_file_upload();
 });
-
-const event_host = "http://localhost:49493/events/";
-let eventSource;
-let userParam;
 
 function get_item_list(){
 
@@ -21,9 +16,6 @@ function get_item_list(){
         create_list(data, userParam);
     }));
 }
-
-
-
 
 function create_list(data){
     const files = data['files'];
@@ -78,38 +70,11 @@ function create_item(file_id, filename, sharelink){
 `
 }
 
-function set_user_param(){
-    const windowPath = window.location.pathname;
-    const pathParts = windowPath.split("/");
-
-    for( let i = 0; i < pathParts.length ; i++ ){
-        if( pathParts[i] === "user" ){
-            userParam = pathParts[i+1];
-            break;
-        }
-    }
-}
-
 function generate_sharelink(file_id){
     let path = `file/${file_id}/share`;
     fetch(path, {
         method: "POST",
     }).then( response => {
         get_item_list();
-    });
-}
-
-function listen_file_upload() {
-    eventSource = new EventSource(event_host + "listen/user/" + userParam);
-    eventSource.addEventListener('message', (e) => {
-        console.log("message: " + e.data);
-        if(e.data === 'true'){
-            $.notify("File uploaded",
-                {
-                    className: "success",
-                    autoHide: false,
-                    globalPosition: 'bottom right'
-                });
-        }
     });
 }
