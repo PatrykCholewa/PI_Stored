@@ -50,15 +50,15 @@ def authenticate_user(username, password):
 
 def create_new_session(username):
     sid = str(uuid.uuid4())
-    __db.hset(__db_table_sessions, username, sid)
+    __db.hset(__db_table_sessions, sid, username)
     return sid
 
 
 def check_session_valid(username, sid):
-    dbsid = __db.hget(__db_table_sessions, username).decode('utf-8')
-    if dbsid is None:
+    db_user = __db.hget(__db_table_sessions, sid).decode('utf-8')
+    if db_user is None:
         return False
-    if dbsid == sid:
+    if db_user == username:
         return True
     return False
 
