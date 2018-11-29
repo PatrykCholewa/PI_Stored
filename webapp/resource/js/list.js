@@ -104,7 +104,12 @@ function listen_file_upload() {
     eventSource.addEventListener('message', (e) => {
         console.log("message: " + e.data);
         if(e.data === 'true'){
-            $.notify("File uploaded");
+            $.notify("File uploaded",
+                {
+                    className: "success",
+                    autoHide: false,
+                    globalPosition: 'bottom right'
+                });
         }
     });
 }

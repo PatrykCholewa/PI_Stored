@@ -25,17 +25,19 @@ server = http.createServer( (request, response) => {
         });
         setInterval(() => {
             let resp = dict[userParam] === true;
-            if(resp){
+            if(resp) {
                 response.write(`data: ${resp}`);
                 response.write("\n\n");
                 dict[userParam] = false;
+            } else {
+                response.write(`data: `);
+                response.write("\n\n");
             }
-        }, 1000);
+        }, 500);
 
     } else if(request.url.match('/events/post/')) {
         dict[userParam] = true;
         response.writeHead(200);
-        response.write("OK");
         response.end();
     } else {
         response.writeHead(400);
