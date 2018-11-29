@@ -1,5 +1,7 @@
-const serverPort = 8113;
+const serverPort = 49493;
 const http = require("http");
+
+const dict = {};
 
 server = http.createServer( (request, response) => {
     const pathParts = request.url.split("/");
@@ -11,29 +13,31 @@ server = http.createServer( (request, response) => {
             break;
         }
     }
+    if( userParam === "" ){
+        response.writeHead(403);
+        response.end();
+    } else if (request.url.match('/events/listen/')) {
+        response.writeHead(200, {
+            'Connection': 'keep-alive',
+            'Content-Type': 'text/event-stream',
+            'Cache-Control': 'no-cache'
+        });
+        setInterval(() => {
+            let resp = dict[userParam] === true;
+            response.write(`event: ${resp}`);
+            response.write("\n\n");
+            if( resp === true ){
+                setTimeout(() => dict[userParam] = false, 3000);
+            }
+        }, 1000);
 
-    if (request.url.match('/events')) {
-    console.log(request.headers);
-    response.writeHead(200, {
-        'Connection': 'keep-alive',
-        'Content-Type': 'text/event-stream',
-        'Cache-Control': 'no-cache'
-    });
-    let lastEventId = request.headers['last-event-id'] || '1';
-    let id = parseInt(lastEventId);
-    setInterval(() => {
-            response.write(
-                `event: choice
-                id: ${id}
-                data: Wiadomość #${id}.
-                data: Będzie więcej.`);
-            response.write('\n\n');
-            id++;
-        }, 3000);
-
+    } else if(request.url.match('/events/post/')) {
+        dict[userParam] = true;
+        response.writeHead(200);
+        response.write("OK");
+        response.end();
     } else {
-        response.writeHeader(200, {"Content-Type": "text/html"});
-        response.write('OK');
+        response.writeHead(400);
         response.end();
     }
 });
