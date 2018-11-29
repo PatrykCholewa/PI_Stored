@@ -1,19 +1,9 @@
 $(function(){
+    set_user_param();
     get_item_list();
 });
 
 function get_item_list(){
-
-    const windowPath = window.location.pathname;
-    const pathParts = windowPath.split("/");
-    let userParam = "";
-
-    for( let i = 0; i < pathParts.length ; i++ ){
-        if( pathParts[i] === "user" ){
-            userParam = pathParts[i+1];
-            break;
-        }
-    }
 
     let path = "file/list";
     fetch(path, {
@@ -26,9 +16,6 @@ function get_item_list(){
         create_list(data, userParam);
     }));
 }
-
-
-
 
 function create_list(data){
     const files = data['files'];
