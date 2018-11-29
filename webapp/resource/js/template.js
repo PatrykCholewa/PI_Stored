@@ -27,7 +27,7 @@ function listen_file_upload() {
         console.log("message: " + e.data);
         if(e.data === 'true'){
             if( !window.location.pathname.endsWith("list")){
-                window.location.pathname = window.location.pathname + '';
+                window.location.pathname = window.location.pathname + '/../list';
             }
             $.notify("File uploaded",
                 {
@@ -40,7 +40,7 @@ function listen_file_upload() {
 }
 
 function set_user_param(){
-    const windowPath = window.location.pathname + "/./list";
+    const windowPath = window.location.pathname;
     const pathParts = windowPath.split("/");
 
     for( let i = 0; i < pathParts.length ; i++ ){
