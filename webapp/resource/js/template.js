@@ -26,7 +26,7 @@ function listen_file_upload() {
         method: "GET",
         credentials: 'include'
     }).then( response => {
-        eventSource = new EventSource(event_host + "listen/user/" + userParam);
+        eventSource = new EventSource(event_host + "listen/user/" + userParam,  {withCredentials: true});
         eventSource.addEventListener('message', (e) => {
             if(e.data !== ''){
                 if( !window.location.pathname.endsWith("list")){
