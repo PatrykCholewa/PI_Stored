@@ -1,6 +1,7 @@
 const serverPort = 49493;
 const http = require("https");
 const fs = require("fs");
+const jwt = require("jwt-simple");
 const options = {
     key: fs.readFileSync("../utils/ssl/key.pem"),
     cert: fs.readFileSync("../utils/ssl/cert.pem")
@@ -13,11 +14,15 @@ server = http.createServer(options, (request, response) => {
     console.log(request.url);
 
     const userParam = getUserParam(request);
+    const cookieList = parseCookies(request);
+    const token = validateAndGetCookieToken(cookieList);
 
-    if (userParam === "") {
-    response.writeHead(403);
-    response.end();
-}
+    if (userParam === "" || token['username'] === userParam) {
+        response.writeHead(403);
+        response.write("");
+        response.end();
+        return;
+    }
 
     if( request.method === 'POST' && request.url.match('/events/post/' ) ) {
         handlePostMethod(request, response, userParam);
@@ -25,6 +30,7 @@ server = http.createServer(options, (request, response) => {
         handleEventListening(request, response, userParam);
     } else {
         response.writeHead(403);
+        response.write("");
         response.end();
     }
 });
@@ -79,4 +85,25 @@ function handleEventListening(request, response, userParam) {
         }
         response.write("\n\n");
     }, intvl);
+}
+
+function parseCookies(request){
+    let list = {},
+        rc = request.headers.cookie;
+
+    rc && rc.split(';').forEach(function( cookie ) {
+        const parts = cookie.split('=');
+        list[parts.shift().trim()] = decodeURI(parts.join('='));
+    });
+
+    return list;
+}
+
+function validateAndGetCookieToken(cookieList){
+    const token = cookieList['events'];
+    try {
+        return jwt.decode(token, "ouwejgi\\'q43q=V$Q:Q$23guj92:[;qg");
+    } catch(err) {
+        return {};
+    }
 }

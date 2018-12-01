@@ -4,5 +4,9 @@
   "private": true,
   "scripts": {
     "start": "node ./events"
+  },
+  "dependencies": {
+    "jwt-simple": "^0.5.5",
+    "zone.js": "0.8.26"
   }
 }
