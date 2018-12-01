@@ -22,22 +22,28 @@ function listen_file_upload() {
         return;
     }
 
-    eventSource = new EventSource(event_host + "listen/user/" + userParam);
-    eventSource.addEventListener('message', (e) => {
-        if(e.data !== ''){
-            if( !window.location.pathname.endsWith("list")){
-                window.location.pathname = window.location.pathname + '/../list';
-            } else {
-                get_item_list();
+    fetch("events/cookie", {
+        method: "GET",
+        credentials: 'include'
+    }).then( response => {
+        eventSource = new EventSource(event_host + "listen/user/" + userParam,  {withCredentials: true});
+        eventSource.addEventListener('message', (e) => {
+            if(e.data !== ''){
+                if( !window.location.pathname.endsWith("list")){
+                    window.location.pathname = window.location.pathname + '/../list';
+                } else {
+                    get_item_list();
+                }
+                $.notify(`File \"${e.data}\" uploaded.`,
+                    {
+                        className: "success",
+                        autoHide: false,
+                        globalPosition: 'bottom right'
+                    });
             }
-            $.notify(`File \"${e.data}\" uploaded.`,
-                {
-                    className: "success",
-                    autoHide: false,
-                    globalPosition: 'bottom right'
-                });
-        }
+        });
     });
+
 }
 
 function set_user_param(){
