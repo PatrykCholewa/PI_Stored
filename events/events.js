@@ -7,6 +7,7 @@ const options = {
 };
 
 const dict = {};
+const intvl = 500;
 
 server = http.createServer(options, (request, response) => {
     console.log(request.url);
@@ -45,6 +46,9 @@ function getUserParam(request) {
 
 function handlePostMethod(request, response, userParam) {
     dict[userParam] = true;
+    setTimeout(() => {
+        dict[userParam] = false;
+    }, intvl + 10);
     response.writeHead(200);
     response.end();
 }
@@ -60,11 +64,9 @@ function handleEventListening(request, response, userParam) {
         let resp = dict[userParam] === true;
         if(resp) {
             response.write(`data: ${resp}`);
-            response.write("\n\n");
-            dict[userParam] = false;
         } else {
             response.write(`data: `);
-            response.write("\n\n");
         }
-    }, 500);
+        response.write("\n\n");
+    }, intvl);
 }
