@@ -96,6 +96,7 @@ function notify_file_uploaded(filename){
     }).then( response => {
         fetch(event_host + "post/user/" + userParam, {
             method: "POST",
+            credentials: 'include',
             body: filename
         }).then(response => {
             window.location = "list";

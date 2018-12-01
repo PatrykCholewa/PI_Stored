@@ -19,7 +19,8 @@ server = http.createServer(options, (request, response) => {
 
     if (userParam === "" || token['username'] === userParam) {
         response.writeHead(403, {
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': 'https://pi.iem.pw.edu.pl',
+            'Access-Control-Allow-Credentials': "true"
         });
         response.write("");
         response.end();
@@ -32,7 +33,8 @@ server = http.createServer(options, (request, response) => {
         handleEventListening(request, response, userParam);
     } else {
         response.writeHead(403, {
-            'Access-Control-Allow-Origin': '*'
+            'Access-Control-Allow-Origin': 'https://pi.iem.pw.edu.pl',
+            'Access-Control-Allow-Credentials': "true"
         });
         response.write("");
         response.end();
@@ -68,14 +70,16 @@ function handlePostMethod(request, response, userParam) {
         dict[userParam] = undefined;
     }, intvl + 10);
     response.writeHead(200, {
-        'Access-Control-Allow-Origin': '*'
+        'Access-Control-Allow-Origin': 'https://pi.iem.pw.edu.pl',
+        'Access-Control-Allow-Credentials': "true"
     });
     response.end();
 }
 
 function handleEventListening(request, response, userParam) {
     response.writeHead(200, {
-        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Origin': 'https://pi.iem.pw.edu.pl',
+        'Access-Control-Allow-Credentials': "true",
         'Connection': 'keep-alive',
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache'
