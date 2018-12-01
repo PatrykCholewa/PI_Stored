@@ -81,8 +81,7 @@ function confirm_sending_file(fileJson){
     })
     .then(response => {
         if( response.ok ){
-            notify_file_uploaded();
-            window.location = "list";
+            notify_file_uploaded(fileJson['filename']);
         } else {
             console.log(response);
             alert("Failed!");
@@ -90,8 +89,11 @@ function confirm_sending_file(fileJson){
     });
 }
 
-function notify_file_uploaded(){
+function notify_file_uploaded(filename){
     fetch(event_host + "post/user/" + userParam, {
         method: "POST",
+        body: filename
+    }).then(response => {
+        window.location = "list";
     });
 }

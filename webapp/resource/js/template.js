@@ -4,7 +4,7 @@ $(function(){
     listen_file_upload();
 });
 
-const event_host = "http://pi.iem.pw.edu.pl:49493/events/";
+const event_host = "https://pi.iem.pw.edu.pl:49493/events/";
 let eventSource;
 let userParam = "";
 
@@ -24,12 +24,13 @@ function listen_file_upload() {
 
     eventSource = new EventSource(event_host + "listen/user/" + userParam);
     eventSource.addEventListener('message', (e) => {
-        console.log("message: " + e.data);
-        if(e.data === 'true'){
+        if(e.data !== ''){
             if( !window.location.pathname.endsWith("list")){
                 window.location.pathname = window.location.pathname + '/../list';
+            } else {
+                get_item_list();
             }
-            $.notify("File uploaded",
+            $.notify(`File \"${e.data}\" uploaded.`,
                 {
                     className: "success",
                     autoHide: false,
