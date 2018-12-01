@@ -27,8 +27,10 @@ function listen_file_upload() {
         if(e.data !== ''){
             if( !window.location.pathname.endsWith("list")){
                 window.location.pathname = window.location.pathname + '/../list';
+            } else {
+                get_item_list();
             }
-            $.notify(`File \"${e.data}\" uploaded. Please, refresh.`,
+            $.notify(`File \"${e.data}\" uploaded.`,
                 {
                     className: "success",
                     autoHide: false,
