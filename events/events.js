@@ -45,9 +45,17 @@ function getUserParam(request) {
 }
 
 function handlePostMethod(request, response, userParam) {
-    dict[userParam] = true;
+    let body = [];
+    request.on('data', (chunk) => {
+        body.push(chunk);
+    }).on('end', () => {
+        body = Buffer.concat(body).toString();
+        dict[userParam] = body;
+        response.end(body);
+    });
+
     setTimeout(() => {
-        dict[userParam] = false;
+        dict[userParam] = undefined;
     }, intvl + 10);
     response.writeHead(200);
     response.end();
@@ -61,9 +69,9 @@ function handleEventListening(request, response, userParam) {
         'Cache-Control': 'no-cache'
     });
     setInterval(() => {
-        let resp = dict[userParam] === true;
+        let resp = dict[userParam] !== undefined;
         if(resp) {
-            response.write(`data: ${resp}`);
+            response.write(`data: ${dict[userParam]}`);
         } else {
             response.write(`data: `);
         }
