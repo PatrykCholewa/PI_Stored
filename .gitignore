@@ -1,3 +1,6 @@
+#Config
+utils/ssl/
+
 #JetBrains
 .idea/
 

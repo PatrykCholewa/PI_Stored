@@ -1,9 +1,14 @@
 const serverPort = 49493;
-const http = require("http");
+const http = require("https");
+const fs = require("fs");
+const options = {
+    key: fs.readFileSync("../utils/ssl/key.pem"),
+    cert: fs.readFileSync("../utils/ssl/cert.pem")
+};
 
 const dict = {};
 
-server = http.createServer( (request, response) => {
+server = http.createServer(options, (request, response) => {
     console.log(request.url);
 
     const userParam = getUserParam(request);
