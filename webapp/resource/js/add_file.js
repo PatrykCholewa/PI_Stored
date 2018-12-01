@@ -90,10 +90,15 @@ function confirm_sending_file(fileJson){
 }
 
 function notify_file_uploaded(filename){
-    fetch(event_host + "post/user/" + userParam, {
-        method: "POST",
-        body: filename
-    }).then(response => {
-        window.location = "list";
+    fetch("events/cookie", {
+        method: "GET",
+        credentials: 'include'
+    }).then( response => {
+        fetch(event_host + "post/user/" + userParam, {
+            method: "POST",
+            body: filename
+        }).then(response => {
+            window.location = "list";
+        });
     });
 }

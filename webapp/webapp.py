@@ -163,6 +163,18 @@ def get_shared_file(file_id):
         return ResponseManager.create_response_403()
 
 
+@app.route('/cholewp1/webapp/user/<string:user>/events/cookie', methods=['GET'])
+def get_events_cookie(user):
+    if is_not_logged():
+        return ResponseManager.create_response_401()
+
+    if user != session['username']:
+        return ResponseManager.create_response_400()
+
+    resp = ResponseManager.create_response_200("OK", "text/plain")
+    return CookieManager.set_events_jwt_to_response(resp, user)
+
+
 @app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
 def login():
     username = request.form['user-id']

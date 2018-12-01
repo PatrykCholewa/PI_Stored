@@ -18,7 +18,9 @@ server = http.createServer(options, (request, response) => {
     const token = validateAndGetCookieToken(cookieList);
 
     if (userParam === "" || token['username'] === userParam) {
-        response.writeHead(403);
+        response.writeHead(403, {
+            'Access-Control-Allow-Origin': '*'
+        });
         response.write("");
         response.end();
         return;
@@ -29,7 +31,9 @@ server = http.createServer(options, (request, response) => {
     } else if ( request.method === 'GET' && request.url.match('/events/listen/' ) ) {
         handleEventListening(request, response, userParam);
     } else {
-        response.writeHead(403);
+        response.writeHead(403, {
+            'Access-Control-Allow-Origin': '*'
+        });
         response.write("");
         response.end();
     }
@@ -102,8 +106,9 @@ function parseCookies(request){
 function validateAndGetCookieToken(cookieList){
     const token = cookieList['events'];
     try {
-        return jwt.decode(token, "ouwejgi\\'q43q=V$Q:Q$23guj92:[;qg");
+        return jwt.decode(token, "ouwejgiq43q=V$Q:Q$23guj92:[;qg");
     } catch(err) {
+        console.log(err);
         return {};
     }
 }
