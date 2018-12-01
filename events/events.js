@@ -57,7 +57,9 @@ function handlePostMethod(request, response, userParam) {
     setTimeout(() => {
         dict[userParam] = undefined;
     }, intvl + 10);
-    response.writeHead(200);
+    response.writeHead(200, {
+        'Access-Control-Allow-Origin': '*'
+    });
     response.end();
 }
 

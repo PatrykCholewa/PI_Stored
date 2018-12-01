@@ -24,12 +24,11 @@ function listen_file_upload() {
 
     eventSource = new EventSource(event_host + "listen/user/" + userParam);
     eventSource.addEventListener('message', (e) => {
-        console.log("message: " + e.data);
-        if(e.data === 'true'){
+        if(e.data !== ''){
             if( !window.location.pathname.endsWith("list")){
                 window.location.pathname = window.location.pathname + '/../list';
             }
-            $.notify("File uploaded",
+            $.notify(`File \"${e.data}\" uploaded. Please, refresh.`,
                 {
                     className: "success",
                     autoHide: false,
