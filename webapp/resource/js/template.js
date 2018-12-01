@@ -4,7 +4,7 @@ $(function(){
     listen_file_upload();
 });
 
-const event_host = "http://pi.iem.pw.edu.pl:49493/events/";
+const event_host = "https://pi.iem.pw.edu.pl:49493/events/";
 let eventSource;
 let userParam = "";
 
