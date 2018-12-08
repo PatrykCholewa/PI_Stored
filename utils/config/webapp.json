@@ -1,0 +1,9 @@
+{
+	"APP_APPLICATION_ROOT": "/cholewp1/webapp/",
+	"APP_SECRET_KEY": "45wh/;ehww4uygkuhjv[$:VHW]",
+	"APP_SECURE": true,
+	"WEBAPP_SHARELINK_PREFIX": "https://pi.iem.pw.edu.pl/cholewp1/webapp/share/file/",
+	"DL_REDIRECT_LINK_PREFIX": "https://pi.iem.pw.edu.pl/cholewp1/dl/file/",
+	"DL_COOKIE_SECRET_KEY": "soinGERG#25gappk2GWG32$#^ azg",
+	"EVENT_COOKIE_SECRET_KEY": "ouwejgiq43q=V$Q:Q$23guj92:[;qg"
+}

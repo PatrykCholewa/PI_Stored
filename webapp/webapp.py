@@ -1,23 +1,24 @@
 from flask import Flask, request, session, flash
 from werkzeug.utils import secure_filename
 
-from src import ResourceManager, UserManager, FileManager, ResponseManager, CookieManager
+from src import ResourceManager, UserManager, FileManager, ResponseManager, CookieManager, ConfigManager
 
 __page_login = "login.html"
 __page_register = "register.html"
 __page_list = "list.html"
 __page_add_file = "add_file.html"
 
-__redirect_link_prefix = "https://pi.iem.pw.edu.pl/cholewp1/dl/file/"
+__redirect_link_prefix = ConfigManager.get_config("DL_REDIRECT_LINK_PREFIX")
+__is_app_secured = ConfigManager.get_config("APP_SECURE")
 
 app = Flask(__name__)
-app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
-app.config["APPLICATION_ROOT"] = "/cholewp1/webapp/"
+app.secret_key = ConfigManager.get_config("APP_SECRET_KEY")
+app.config["APPLICATION_ROOT"] = ConfigManager.get_config("APP_APPLICATION_ROOT")
 app.config.update(
-    SESSION_COOKIE_HTTPONLY=True,
-    SESSION_COOKIE_SECURE=True,
-    REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=True
+    SESSION_COOKIE_HTTPONLY=__is_app_secured,
+    SESSION_COOKIE_SECURE=__is_app_secured,
+    REMEMBER_COOKIE_HTTPONLY=__is_app_secured,
+    REMEMBER_COOKIE_SECURE=__is_app_secured
 )
 
 
