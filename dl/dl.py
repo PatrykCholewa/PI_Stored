@@ -1,12 +1,12 @@
 from flask import Flask, request, flash
-from src import ResponseManager, CookieManager, UserFileManager
+from src import ResponseManager, CookieManager, UserFileManager, ConfigManager
 
 app = Flask(__name__)
-app.secret_key = b'45wh/;ehww4uygkuhjv[$:VHW]'
+app.secret_key = ConfigManager.get_config("APP_SECRET_KEY")
 app.config.update(
-    APPLICATION_ROOT="/cholewp1/dl/",
-    REMEMBER_COOKIE_HTTPONLY=True,
-    REMEMBER_COOKIE_SECURE=True
+    APPLICATION_ROOT=ConfigManager.get_config("APP_APPLICATION_ROOT"),
+    REMEMBER_COOKIE_HTTPONLY=ConfigManager.get_config("APP_SECURE"),
+    REMEMBER_COOKIE_SECURE=ConfigManager.get_config("APP_SECURE")
 )
 
 
