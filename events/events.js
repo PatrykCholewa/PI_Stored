@@ -1,4 +1,3 @@
-const serverPort = 49493;
 const http = require("https");
 const fs = require("fs");
 const jwt = require("jwt-simple");
@@ -7,8 +6,11 @@ const options = {
     cert: fs.readFileSync("../utils/ssl/cert.pem")
 };
 
+const config = JSON.parse(fs.readFileSync('../utils/config/events.json', 'utf8'));
+
 const dict = {};
-const intvl = 500;
+const serverPort = config["PORT_NUMBER"];
+const intvl = config["CHECK_INTERVAL"];
 
 server = http.createServer(options, (request, response) => {
     console.log(request.url);
@@ -110,7 +112,7 @@ function parseCookies(request){
 function validateAndGetCookieToken(cookieList){
     const token = cookieList['events'];
     try {
-        return jwt.decode(token, "ouwejgiq43q=V$Q:Q$23guj92:[;qg");
+        return jwt.decode(token, config["EVENT_COOKIE_SECRET_KEY"]);
     } catch(err) {
         console.log(err);
         return {};
