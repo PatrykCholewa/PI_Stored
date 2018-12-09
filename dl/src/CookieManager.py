@@ -3,8 +3,10 @@ from datetime import datetime, timedelta
 
 import jwt
 
-secret = b'soinGERG#25gappk2GWG32$#^ azg'
-secure = True
+from src import ConfigManager
+
+secret = ConfigManager.get_config("DL_COOKIE_SECRET_KEY")
+secure = ConfigManager.get_config("APP_SECURE")
 
 
 def validate_user_jwt(token, username):

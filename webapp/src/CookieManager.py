@@ -2,9 +2,11 @@ from datetime import datetime, timedelta
 
 import jwt
 
-dl_secret = b'soinGERG#25gappk2GWG32$#^ azg'
-event_secret = "ouwejgiq43q=V$Q:Q$23guj92:[;qg"
-secure = True
+from src import ConfigManager
+
+dl_secret = ConfigManager.get_config("DL_COOKIE_SECRET_KEY")
+event_secret = ConfigManager.get_config("EVENT_COOKIE_SECRET_KEY")
+secure = ConfigManager.get_config("APP_SECURE")
 
 
 def __create_file_jwt(file_list, expire):

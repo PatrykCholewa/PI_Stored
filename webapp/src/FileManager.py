@@ -2,12 +2,14 @@ import uuid
 
 from redis import Redis
 
+from src import ConfigManager
+
 __db = Redis()
 __db_table_user_file = "cholewp1:dl:v4:user_file"
 __db_table_file = "cholewp1:dl:v4:file"
 __db_table_shared_file = "cholewp1:dl:v5:shared_file"
 
-__sharelink_prefix = "https://pi.iem.pw.edu.pl/cholewp1/webapp/share/file/"
+__sharelink_prefix = ConfigManager.get_config("WEBAPP_SHARELINK_PREFIX")
 
 
 def check_file_count(user):
