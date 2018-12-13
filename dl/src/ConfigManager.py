@@ -8,7 +8,7 @@ def __load_config():
     return __d
 
 
-__config_file_path = "../utils/config/webapp.json"
+__config_file_path = "../utils/config/dl.json"
 __config_dict = __load_config()
 
 
