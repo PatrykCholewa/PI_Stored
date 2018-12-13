@@ -2,5 +2,5 @@
 
 ## Test users
 
-    cholewp1@wp.pl
+    cholewp2@wp.pl
     Test1234
