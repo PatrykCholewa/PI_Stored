@@ -26,13 +26,14 @@
         <div class="panel well">
 
             <nav id="nav">
-                <button id="logout"
-                        name="logout"
-                        class="btn btn-lg btn-light pull-right"
-                        type="button"
-                        onclick="logout()">
-                    Logout
-                </button>
+                <form method="POST" action="/cholewp1/webapp/logout/">
+                    <button id="logout"
+                            name="logout"
+                            class="btn btn-lg btn-light pull-right"
+                            type="submit">
+                        Logout
+                    </button>
+                </form>
             </nav>
 
             <div class="panel-heading"><h3 class="text-center">Add file</h3></div>
