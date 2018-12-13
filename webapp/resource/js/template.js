@@ -8,15 +8,6 @@ const event_host = "https://pi.iem.pw.edu.pl:49493/events/";
 let eventSource;
 let userParam = "";
 
-function logout(){
-    fetch("/cholewp1/webapp/ws/logout/", {
-        method: "POST"
-    }).then( response => {
-        window.location = "/cholewp1/webapp/";
-    });
-    return false;
-}
-
 function listen_file_upload() {
     if(userParam === ""){
         return;

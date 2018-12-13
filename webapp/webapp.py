@@ -1,4 +1,7 @@
-from flask import Flask, request, session, flash
+from functools import wraps
+from six.moves.urllib.parse import urlencode
+from authlib.flask.client import OAuth
+from flask import Flask, request, session, flash, redirect, url_for
 from werkzeug.utils import secure_filename
 
 from src import ResourceManager, UserManager, FileManager, ResponseManager, CookieManager, ConfigManager
@@ -11,6 +14,11 @@ __page_add_file = "add_file.html"
 __redirect_link_prefix = ConfigManager.get_config("DL_REDIRECT_LINK_PREFIX")
 __is_app_secured = ConfigManager.get_config("APP_SECURE")
 
+__application_base_url = 'https://pi.iem.pw.edu.pl/cholewp1/webapp/'
+__login_callback = 'https://pi.iem.pw.edu.pl/cholewp1/webapp/callback'
+__user_info_url = 'https://patrykcholewa.eu.auth0.com/userinfo'
+__oauth_client_id = 'CMYufXh8jfBSzKPMcsLlD0veLF1GSugD'
+
 app = Flask(__name__)
 app.secret_key = ConfigManager.get_config("APP_SECRET_KEY")
 app.config["APPLICATION_ROOT"] = ConfigManager.get_config("APP_APPLICATION_ROOT")
@@ -21,20 +29,39 @@ app.config.update(
     REMEMBER_COOKIE_SECURE=__is_app_secured
 )
 
+oauth = OAuth(app)
 
-def is_not_logged():
-    if 'sid' not in session:
-        return True
+auth0 = oauth.register(
+    'auth0',
+    client_id=__oauth_client_id,
+    client_secret='o9o-uxy4QbgBxWw2nx8XQkRh9esBDr-o7Vzh9FSpqfASFFjHgwFaeH8stEnDbQUC',
+    api_base_url='https://patrykcholewa.eu.auth0.com',
+    access_token_url='https://patrykcholewa.eu.auth0.com/oauth/token',
+    authorize_url='https://patrykcholewa.eu.auth0.com/authorize',
+    client_kwargs={
+        'scope': 'openid profile',
+    },
+)
 
-    return not UserManager.check_session_valid(session['username'], session['sid'])
+
+def requires_auth(f):
+    @wraps(f)
+    def decorated(*args, **kwargs):
+        if 'sid' not in session:
+            return ResponseManager.create_response_401()
+
+        valid = UserManager.check_session_valid(session['username'], session['sid'])
+        if valid:
+            return f(*args, **kwargs)
+        else:
+            return ResponseManager.create_response_401()
+
+    return decorated
 
 
 @app.route('/cholewp1/webapp/')
 def index():
-    if is_not_logged():
-        return ResourceManager.send_html(__page_login)
-
-    return ResourceManager.send_html(__page_list)
+    return ResourceManager.send_html(__page_login)
 
 
 @app.route('/cholewp1/webapp/login')
@@ -42,24 +69,20 @@ def send_html_login():
     return index()
 
 
-@app.route('/cholewp1/webapp/register')
-def send_html_register():
-    return ResponseManager.create_response_403()
-    # return ResourceManager.send_html(__page_register)
-
-
-@app.route('/cholewp1/webapp/user/<string:username>/list')
-def send_html_list(username):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
+@app.route('/cholewp1/webapp/user/<string:user>/list')
+@requires_auth
+def send_html_list(user):
+    if user != session['username']:
+        return ResponseManager.create_response_400()
 
     return ResourceManager.send_html(__page_list)
 
 
-@app.route('/cholewp1/webapp/user/<string:username>/add_file')
-def send_html_add_file(username):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
+@app.route('/cholewp1/webapp/user/<string:user>/add_file')
+@requires_auth
+def send_html_add_file(user):
+    if user != session['username']:
+        return ResponseManager.create_response_400()
 
     return ResourceManager.send_html(__page_add_file)
 
@@ -85,10 +108,8 @@ def send_img(path):
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/file/list', methods=['GET'])
+@requires_auth
 def get_user_files(user):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
     if user != session['username']:
         return ResponseManager.create_response_400()
 
@@ -97,10 +118,8 @@ def get_user_files(user):
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/file/add', methods=['POST'])
+@requires_auth
 def get_add_file_access(user):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
     if user != session['username']:
         return ResponseManager.create_response_400()
 
@@ -115,16 +134,15 @@ def get_add_file_access(user):
 
     new_file_id = FileManager.get_new_file_id(user)
 
-    response = "{\"user\":\""+user+"\",\"file_id\":\""+new_file_id+"\",\"filename\":\""+secure_filename(file.filename)+"\"}"
+    response = "{\"user\":\"" + user + "\",\"file_id\":\"" + new_file_id + "\",\"filename\":\"" + secure_filename(
+        file.filename) + "\"}"
     response = ResponseManager.create_response_200(response, "application/json")
     return CookieManager.set_file_cookie_to_response(response, [new_file_id])
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/file/<string:file_id>/confirm/<string:filename>', methods=['POST'])
+@requires_auth
 def add_file_confirm(user, file_id, filename):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
     if user != session['username']:
         return ResponseManager.create_response_400()
 
@@ -136,10 +154,8 @@ def add_file_confirm(user, file_id, filename):
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/file/<string:file_id>/share', methods=['POST'])
+@requires_auth
 def share_file(user, file_id):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
     if user != session['username']:
         return ResponseManager.create_response_400()
 
@@ -153,7 +169,6 @@ def share_file(user, file_id):
 
 @app.route('/cholewp1/webapp/share/file/<string:file_id>', methods=['GET'])
 def get_shared_file(file_id):
-
     res = FileManager.is_file_shared(file_id)
 
     if res:
@@ -165,10 +180,8 @@ def get_shared_file(file_id):
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/events/cookie', methods=['GET'])
+@requires_auth
 def get_events_cookie(user):
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
     if user != session['username']:
         return ResponseManager.create_response_400()
 
@@ -176,44 +189,30 @@ def get_events_cookie(user):
     return CookieManager.set_events_jwt_to_response(resp, user)
 
 
-@app.route('/cholewp1/webapp/ws/login/', methods=['POST'])
+@app.route('/cholewp1/webapp/oauth')
 def login():
-    username = request.form['user-id']
-    if UserManager.authenticate_user(username, request.form['password']):
-        sid = UserManager.create_new_session(username)
-        session['username'] = username
-        session['sid'] = sid
-
-        response = ResourceManager.send_html(__page_list)
-        return response
-    else:
-        ResponseManager.create_response_401()
+    return auth0.authorize_redirect(redirect_uri=__login_callback,
+                                    audience=__user_info_url)
 
 
-@app.route('/cholewp1/webapp/ws/logout/', methods=['POST'])
+@app.route('/cholewp1/webapp/callback')
+def callback_handling():
+    auth0.authorize_access_token()
+    resp = auth0.get('userinfo')
+    userinfo = resp.json()
+    username = userinfo['name']
+
+    sid = UserManager.create_new_session(username)
+    session['username'] = username
+    session['sid'] = sid
+
+    return ResponseManager.create_response_303(__application_base_url + 'user/' + username + "/list")
+
+
+@app.route('/cholewp1/webapp/logout/', methods=['POST'])
 def logout():
-    if is_not_logged():
-        return ResponseManager.create_response_401()
-
     UserManager.delete_session(session['username'])
-    session.pop('sid', None)
-    session.pop('username', None)
-    return ResourceManager.send_html(__page_login)
+    session.clear()
 
-
-@app.route('/cholewp1/webapp/ws/register/', methods=['POST'])
-def register():
-    # return ResponseManager.create_response_403()
-    # AVAILABLE BECAUSE OF OFTEN DB CLEARING
-    new_user = UserManager.add_new_user(request.form['user-id'], request.form['password'])
-    if new_user is not None:
-        return ResourceManager.send_html(__page_login)
-    else:
-        return ResponseManager.create_response_401()
-
-
-# DATABASE CLEARING PROTECTION
-if __name__ == '__main__':
-    UserManager.add_new_user("cholewp1", "test")
-    UserManager.add_new_user("cholewp2", "test")
-    FileManager.init_db()
+    params = {'returnTo': __application_base_url, 'client_id': __oauth_client_id}
+    return redirect(auth0.api_base_url + '/v2/logout?' + urlencode(params))
