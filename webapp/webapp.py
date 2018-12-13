@@ -14,10 +14,10 @@ __page_add_file = "add_file.html"
 __redirect_link_prefix = ConfigManager.get_config("DL_REDIRECT_LINK_PREFIX")
 __is_app_secured = ConfigManager.get_config("APP_SECURE")
 
-__application_base_url = 'https://pi.iem.pw.edu.pl/cholewp1/webapp/'
-__login_callback = 'https://pi.iem.pw.edu.pl/cholewp1/webapp/callback'
-__user_info_url = 'https://patrykcholewa.eu.auth0.com/userinfo'
-__oauth_client_id = 'CMYufXh8jfBSzKPMcsLlD0veLF1GSugD'
+__application_base_url = ConfigManager.get_config("WEBAPP_APPLICATION_BASE_URL")
+__login_callback = ConfigManager.get_config("WEBAPP_LOGIN_CALLBACK")
+__user_info_url = ConfigManager.get_config("OAUTH_USER_INFO")
+__oauth_client_id = ConfigManager.get_config("OAUTH_CLIENT_ID")
 
 app = Flask(__name__)
 app.secret_key = ConfigManager.get_config("APP_SECRET_KEY")
@@ -34,10 +34,10 @@ oauth = OAuth(app)
 auth0 = oauth.register(
     'auth0',
     client_id=__oauth_client_id,
-    client_secret='o9o-uxy4QbgBxWw2nx8XQkRh9esBDr-o7Vzh9FSpqfASFFjHgwFaeH8stEnDbQUC',
-    api_base_url='https://patrykcholewa.eu.auth0.com',
-    access_token_url='https://patrykcholewa.eu.auth0.com/oauth/token',
-    authorize_url='https://patrykcholewa.eu.auth0.com/authorize',
+    client_secret=ConfigManager.get_config("OAUTH_CLIENT_SECRET"),
+    api_base_url=ConfigManager.get_config("OAUTH_API_BASE_URL"),
+    access_token_url=ConfigManager.get_config("OAUTH_ACCESS_TOKEN_URL"),
+    authorize_url=ConfigManager.get_config("OAUTH_AUTHORIZE_URL"),
     client_kwargs={
         'scope': 'openid profile',
     },
