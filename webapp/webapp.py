@@ -202,6 +202,9 @@ def callback_handling():
     userinfo = resp.json()
     username = userinfo['name']
 
+    if 'sid' in session:
+        UserManager.delete_session(session['sid'])
+
     sid = UserManager.create_new_session(username)
     session['username'] = username
     session['sid'] = sid
@@ -209,9 +212,11 @@ def callback_handling():
     return ResponseManager.create_response_303(__application_base_url + 'user/' + username + "/list")
 
 
-@app.route('/cholewp1/webapp/logout/', methods=['POST'])
+@app.route('/cholewp1/webapp/logout/', methods=['GET', 'POST'])
 def logout():
-    UserManager.delete_session(session['username'])
+    if 'sid' in session:
+        UserManager.delete_session(session['sid'])
+
     session.clear()
 
     params = {'returnTo': __application_base_url, 'client_id': __oauth_client_id}
