@@ -1,4 +1,7 @@
 import logging
+
+from flask import render_template
+
 from src import ResponseManager
 
 
@@ -12,7 +15,7 @@ def _create_response_with_resource(path, content_type):
 
 
 def send_html(file_name):
-    return _create_response_with_resource(file_name, "text/html")
+    return render_template(file_name)
 
 
 def send_css(file_name):
@@ -28,4 +31,4 @@ def send_img(file_name):
 
 
 def send_html_template(file_name):
-    return _create_response_with_resource("template/" + file_name, "text/html")
+    return render_template(file_name)
