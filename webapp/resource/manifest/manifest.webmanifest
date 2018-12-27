@@ -1,0 +1,8 @@
+{
+  "name": "PI Stored",
+  "short_name": "PI Stored",
+  "display": "standalone",
+  "description": "Adding and downloading files.",
+  "theme_color": "#209CEE"
+  "background_color": "white"
+}

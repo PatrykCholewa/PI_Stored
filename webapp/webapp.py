@@ -97,6 +97,11 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
+@app.route('/cholewp1/webapp/manifest/<path:path>')
+def send_manifest(path):
+    return ResourceManager.send_manifest(path)
+
+
 @app.route('/cholewp1/webapp/user/<string:user>/file/list', methods=['GET'])
 @requires_auth
 def get_user_files(user):

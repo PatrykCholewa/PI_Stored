@@ -40,3 +40,7 @@ def send_js(file_name):
 
 def send_img(file_name):
     return __create_response_with_resource("img/" + file_name, "image")
+
+
+def send_manifest(file_name):
+    return __create_response_with_resource("manifest/" + file_name, None)
