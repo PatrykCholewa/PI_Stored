@@ -8,52 +8,63 @@
 
     <title>PI Stored</title>
     <link rel="icon" href="/cholewp1/webapp/img/favicon.ico" sizes="32x32" type="image/ico">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link rel="stylesheet" href="/cholewp1/webapp/css/main.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="https://maxcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
     <script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script>
 
 </head>
 <body>
 
-<header id="header" class="page-header d-flex justify-content-center">
-    <img src="/cholewp1/webapp/img/logo.png" class="img-responsive center-block">
-</header>
+<div class="container">
+    <header id="header" class="pb-2 mt-4 mb-2 d-flex justify-content-center">
+        <img src="/cholewp1/webapp/img/logo.png" class="img-responsive center-block">
+    </header>
 
-<main>
+    {% if session.logged_in %}
+        <nav class="navbar navbar-dark bg-dark">
+            <a class="navbar-brand" href="#">PI Stored</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="list"> List </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="add_file"> Add file </a>
+                    </li>
+                </ul>
 
-    <div class="container">
-        <div class="panel well">
+                <form method="POST" class="form-inline my-2 my-lg-0" action="/cholewp1/webapp/logout/">
+                    <button id="logout"
+                            name="logout"
+                            class="btn btn-outline-light"
+                            type="submit">
+                        Logout
+                    </button>
+                </form>
+             </div>
+        </nav>
+    {% endif %}
 
-            {% if session.logged_in %}
-                <nav id="nav">
-                    <form method="POST" action="/cholewp1/webapp/logout/">
-                        <button id="logout"
-                                name="logout"
-                                class="btn btn-lg btn-light pull-right"
-                                type="submit">
-                            Logout
-                        </button>
-                    </form>
-                    <a id="add_file_btn"
-                       class="btn btn-lg btn-light pull-right"
-                       type="button"
-                       href="add_file">
-                        Add file
-                    </a>
-                </nav>
-            {% endif %}
+    <main>
+
+        <div class="jumbotron">
 
             {% block content %}{% endblock %}
 
         </div>
-    </div>
-</main>
+    </main>
 
-<script src="/cholewp1/webapp/js/layout.js"></script>
+    <script src="/cholewp1/webapp/js/layout.js"></script>
+
+</div>
 
 </body>
 </html>
