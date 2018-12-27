@@ -6,10 +6,6 @@ from werkzeug.utils import secure_filename
 
 from src import ResourceManager, SessionManager, FileManager, ResponseManager, CookieManager, ConfigManager
 
-__page_register = "register.html"
-__page_list = "list.html"
-__page_add_file = "add_file.html"
-
 __redirect_link_prefix = ConfigManager.get_config("DL_REDIRECT_LINK_PREFIX")
 __is_app_secured = ConfigManager.get_config("APP_SECURE")
 
@@ -74,7 +70,7 @@ def send_html_list(user):
     if user != session['username']:
         return ResponseManager.create_response_400()
 
-    return ResourceManager.send_html(__page_list)
+    return ResourceManager.send_html_list(session['username'])
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/add_file')
@@ -83,7 +79,7 @@ def send_html_add_file(user):
     if user != session['username']:
         return ResponseManager.create_response_400()
 
-    return ResourceManager.send_html(__page_add_file)
+    return ResourceManager.send_html_add_file(session['username'])
 
 
 @app.route('/cholewp1/webapp/css/<path:path>')
