@@ -1,10 +1,10 @@
 from functools import wraps
 from six.moves.urllib.parse import urlencode
 from authlib.flask.client import OAuth
-from flask import Flask, request, session, flash, redirect, url_for
+from flask import Flask, request, session, flash, redirect
 from werkzeug.utils import secure_filename
 
-from src import ResourceManager, UserManager, FileManager, ResponseManager, CookieManager, ConfigManager
+from src import ResourceManager, SessionManager, FileManager, ResponseManager, CookieManager, ConfigManager
 
 __page_login = "login.html"
 __page_register = "register.html"
@@ -50,7 +50,7 @@ def requires_auth(f):
         if 'sid' not in session:
             return ResponseManager.create_response_401()
 
-        valid = UserManager.check_session_valid(session['username'], session['sid'])
+        valid = SessionManager.check_session_valid(session['username'], session['sid'])
         if valid:
             return f(*args, **kwargs)
         else:
@@ -203,9 +203,9 @@ def callback_handling():
     username = userinfo['name']
 
     if 'sid' in session:
-        UserManager.delete_session(session['sid'])
+        SessionManager.delete_session(session['sid'])
 
-    sid = UserManager.create_new_session(username)
+    sid = SessionManager.create_new_session(username)
     session['username'] = username
     session['sid'] = sid
 
@@ -215,7 +215,7 @@ def callback_handling():
 @app.route('/cholewp1/webapp/logout/', methods=['GET', 'POST'])
 def logout():
     if 'sid' in session:
-        UserManager.delete_session(session['sid'])
+        SessionManager.delete_session(session['sid'])
 
     session.clear()
 
