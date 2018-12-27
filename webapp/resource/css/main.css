@@ -8,8 +8,7 @@
     border-color: #222;
 }
 
-.oauth-logo {
-    background: white;
-    border-radius: 20%;
-    padding: 10px;
+.nav-logged-text {
+    color: white;
+    padding-right: 1em;
 }

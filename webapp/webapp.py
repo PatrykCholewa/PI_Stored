@@ -6,7 +6,6 @@ from werkzeug.utils import secure_filename
 
 from src import ResourceManager, SessionManager, FileManager, ResponseManager, CookieManager, ConfigManager
 
-__page_login = "login.html"
 __page_register = "register.html"
 __page_list = "list.html"
 __page_add_file = "add_file.html"
@@ -61,7 +60,7 @@ def requires_auth(f):
 
 @app.route('/cholewp1/webapp/')
 def index():
-    return ResourceManager.send_html(__page_login)
+    return ResourceManager.send_html_login()
 
 
 @app.route('/cholewp1/webapp/login')
@@ -85,11 +84,6 @@ def send_html_add_file(user):
         return ResponseManager.create_response_400()
 
     return ResourceManager.send_html(__page_add_file)
-
-
-@app.route('/cholewp1/webapp/template/<path:path>')
-def send_html_template(path):
-    return ResourceManager.send_html_template(path)
 
 
 @app.route('/cholewp1/webapp/css/<path:path>')

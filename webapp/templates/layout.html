@@ -25,14 +25,15 @@
         <img src="/cholewp1/webapp/img/logo.png" class="img-responsive center-block">
     </header>
 
-    {% if session.logged_in %}
-        <nav class="navbar navbar-dark bg-dark">
-            <a class="navbar-brand" href="#">PI Stored</a>
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+
+    <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
+        <a class="navbar-brand" href="#">PI Stored</a>
+        {% if username %}
+            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav">
+            <div class="collapse navbar-collapse" id="navb">
+                <ul class="navbar-nav mr-auto">
                     <li class="nav-item">
                         <a class="nav-link" href="list"> List </a>
                     </li>
@@ -42,6 +43,7 @@
                 </ul>
 
                 <form method="POST" class="form-inline my-2 my-lg-0" action="/cholewp1/webapp/logout/">
+                    <span class="nav-logged-text">Logged as: {{ username }}</span>
                     <button id="logout"
                             name="logout"
                             class="btn btn-outline-light"
@@ -49,9 +51,10 @@
                         Logout
                     </button>
                 </form>
-             </div>
-        </nav>
-    {% endif %}
+            </div>
+
+        {% endif %}
+    </nav>
 
     <main>
 
