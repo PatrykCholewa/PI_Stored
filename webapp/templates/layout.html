@@ -57,7 +57,13 @@
 
         <div class="jumbotron">
 
-            {% block content %}{% endblock %}
+            <h1 class="display-3 d-flex border-bottom justify-content-center">
+                {% block page_title %}{% endblock %}
+            </h1>
+
+            <div class="lead d-flex justify-content-center">
+                {% block content %}{% endblock %}
+            </div>
 
         </div>
     </main>

@@ -1,17 +1,18 @@
 {% extends "layout.html" %}
+
+{% block page_title %}
+    Log in
+{% endblock %}
+
 {% block content %}
 
-    <h1 class="display-3 d-flex border-bottom justify-content-center">Log in</h1>
-
-    <div class="lead d-flex justify-content-center">
-        <div class="card" style="width: 18rem;">
-              <img class="card-img-top" src="https://i.cloudup.com/StzWWrY34s.png" alt="OAuth logo">
-              <div class="card-body">
-                    <div class="card-text">
-                        <a class="btn btn-primary btn-lg btn-login btn-block" href="oauth">Log in with OAuth</a>
-                    </div>
-              </div>
-        </div>
+    <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="https://i.cloudup.com/StzWWrY34s.png" alt="OAuth logo">
+          <div class="card-body">
+                <div class="card-text">
+                    <a class="btn btn-primary btn-lg btn-login btn-block" href="oauth">Log in with OAuth</a>
+                </div>
+          </div>
     </div>
 
     <script src="/cholewp1/webapp/js/login.js"></script>
