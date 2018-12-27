@@ -1,5 +1,4 @@
 $(function(){
-    $('#header').load('/cholewp1/webapp/template/header.html');
     set_user_param();
     listen_file_upload();
 });
