@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Project for university">
+    <meta name="keywords" content="HTML, CSS, JS">
+
+    <title>PI Stored</title>
+    <link rel="icon" href="/cholewp1/webapp/img/favicon.ico" sizes="32x32" type="image/ico">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link rel="stylesheet" href="/cholewp1/webapp/css/main.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script>
+
+</head>
+<body>
+
+<header id="header" class="page-header d-flex justify-content-center">
+    <img src="/cholewp1/webapp/img/logo.png" class="img-responsive center-block">
+</header>
+
+<main>
+
+    <div class="container">
+        <div class="panel well">
+
+            <nav id="nav">
+                <form method="POST" action="/cholewp1/webapp/logout/">
+                    <button id="logout"
+                            name="logout"
+                            class="btn btn-lg btn-light pull-right"
+                            type="submit">
+                        Logout
+                    </button>
+                </form>
+                <a id="add_file_btn"
+                   class="btn btn-lg btn-light pull-right"
+                   type="button"
+                   href="add_file">
+                    Add file
+                </a>
+            </nav>
+
+            {% block content %}{% endblock %}
+
+        </div>
+    </div>
+</main>
+
+<script src="/cholewp1/webapp/js/template.js"></script>
+
+</body>
+</html>
