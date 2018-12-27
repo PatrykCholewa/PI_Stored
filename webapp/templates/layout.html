@@ -28,22 +28,24 @@
     <div class="container">
         <div class="panel well">
 
-            <nav id="nav">
-                <form method="POST" action="/cholewp1/webapp/logout/">
-                    <button id="logout"
-                            name="logout"
-                            class="btn btn-lg btn-light pull-right"
-                            type="submit">
-                        Logout
-                    </button>
-                </form>
-                <a id="add_file_btn"
-                   class="btn btn-lg btn-light pull-right"
-                   type="button"
-                   href="add_file">
-                    Add file
-                </a>
-            </nav>
+            {% if session.logged_in %}
+                <nav id="nav">
+                    <form method="POST" action="/cholewp1/webapp/logout/">
+                        <button id="logout"
+                                name="logout"
+                                class="btn btn-lg btn-light pull-right"
+                                type="submit">
+                            Logout
+                        </button>
+                    </form>
+                    <a id="add_file_btn"
+                       class="btn btn-lg btn-light pull-right"
+                       type="button"
+                       href="add_file">
+                        Add file
+                    </a>
+                </nav>
+            {% endif %}
 
             {% block content %}{% endblock %}
 
