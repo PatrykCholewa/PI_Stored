@@ -10,23 +10,29 @@
     <title>PI Stored</title>
     <link rel="manifest" href="/cholewp1/webapp/manifest/manifest.webmanifest" >
     <link rel="icon" href="/cholewp1/webapp/img/favicon.ico" sizes="32x32" type="image/ico">
-    <link rel="stylesheet" href="/cholewp1/webapp/css/main.css">
-
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="/cholewp1/webapp/css/main/main.css">
+    <link rel="stylesheet" href="/cholewp1/webapp/css/bootstrap/bootstrap-shortened.css">
 
 </head>
 <body>
 
-<div class="container">
+<div id="body-container" class="container">
     <header id="header" class="pb-2 mt-4 mb-2 d-flex justify-content-center">
-        <img src="/cholewp1/webapp/img/logo.png" alt="PI Stored Logo" class="img-responsive center-block">
+        <img src="/cholewp1/webapp/img/logo-small.png"
+             srcset="/cholewp1/webapp/img/logo.png 1000w, /cholewp1/webapp/img/logo-small.png 500w"
+             alt="PI Stored Logo"
+             class="mx-auto img-fluid d-block">
     </header>
 
 
     <nav class="navbar navbar-expand-sm navbar-dark bg-dark">
         <a class="navbar-brand" href="#">PI Stored</a>
         {% if username %}
-            <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navb">
+            <button class="navbar-toggler navbar-toggler-right"
+                    type="button"
+                    name="collapse"
+                    data-toggle="collapse"
+                    data-target="#navb">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navb">
@@ -34,9 +40,11 @@
                     <li class="nav-item">
                         <a class="nav-link" href="list"> List </a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="add_file"> Add file </a>
-                    </li>
+                    {%  if add_file_visible %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="add_file"> Add file </a>
+                        </li>
+                    {% endif %}
                 </ul>
 
                 <form method="POST" class="form-inline my-2 my-lg-0" action="/cholewp1/webapp/logout/">
@@ -78,9 +86,9 @@
     </div>
 </footer>
 
-<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
 <script src="https://rawgit.com/notifyjs/notifyjs/master/dist/notify.js"></script>
 
 <script src="/cholewp1/webapp/js/layout.js"></script>

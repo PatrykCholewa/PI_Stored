@@ -6,7 +6,42 @@
 
 {% block content %}
 
-    <div id="panel-list" class="list-group"></div>
+    <div class="list-group">
+        {%  for file in files %}
+            <div class="list-group-item">
+                <a download href="{{ file.download|safe }}" class="btn-block">
+                    <button type="button"
+                            class="btn btn-outline-primary btn-lg btn-block"
+                            aria-label="Left Align">
+                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                        <b>{{ file.name }}</b>
+                    </button>
+                </a>
+                <div class="input-group">
+                    <div class="col-lg-6">
+                        <label for="sharelink-{{ file.id }}" class="d-none">Sharelink</label>
+                        <input id="sharelink-{{ file.id }}"
+                               name="sharelink-{{ file.id }}"
+                               type="text"
+                               class="form-control"
+                               placeholder="Sharelink..."
+                               readonly
+                               value="{{ file.sharelink|safe }}">
+                    </div>
+                    <div class="col-lg-6">
+                        <span class="input-group-btn">
+                        <button class="btn btn-default {{ "disabled" if file.sharelink else "active" }}"
+                                type="button"
+                                onclick="generate_sharelink('{{ file.id }}')">
+                            <span class="glyphicon glyphicon-globe" aria-hidden="true"></span>
+                            Create sharelink!
+                        </button>
+                    </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
 
 {% endblock %}
 

@@ -1,0 +1,19 @@
+#body-container {
+    max-width: 750px;
+}
+
+.upload-drop-zone {
+    color: #ccc;
+    border: 2px dashed #ccc;
+    text-align: center;
+
+    &.drop {
+        color: #222;
+        border-color: #222;
+    }
+}
+
+.nav-logged-text {
+    color: white;
+    padding-right: 1em;
+}

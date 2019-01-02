@@ -70,7 +70,8 @@ def send_html_list(user):
     if user != session['username']:
         return ResponseManager.create_response_400()
 
-    return ResourceManager.send_html_list(session['username'])
+    response = ResourceManager.send_html_list(session['username'], FileManager.get_user_file_names(user))
+    return CookieManager.set_file_cookie_to_response(response, FileManager.get_user_file_ids(user))
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/add_file')
@@ -100,16 +101,6 @@ def send_img(path):
 @app.route('/cholewp1/webapp/manifest/<path:path>')
 def send_manifest(path):
     return ResourceManager.send_manifest(path)
-
-
-@app.route('/cholewp1/webapp/user/<string:user>/file/list', methods=['GET'])
-@requires_auth
-def get_user_files(user):
-    if user != session['username']:
-        return ResponseManager.create_response_400()
-
-    response = ResponseManager.create_response_200(FileManager.get_user_file_names(user), "application/json")
-    return CookieManager.set_file_cookie_to_response(response, FileManager.get_user_file_ids(user))
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/file/add', methods=['POST'])
