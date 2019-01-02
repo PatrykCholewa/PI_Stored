@@ -1,0 +1,22 @@
+{% extends "layout.html" %}
+
+{% block page_title %}
+    Log in
+{% endblock %}
+
+{% block content %}
+
+    <div class="card" style="width: 18rem;">
+          <img class="card-img-top" src="https://i.cloudup.com/StzWWrY34s.png" alt="OAuth logo">
+          <div class="card-body">
+                <div class="card-text">
+                    <a class="btn btn-primary btn-lg btn-login btn-block" href="oauth">Log in with OAuth</a>
+                </div>
+          </div>
+    </div>
+
+{% endblock %}
+
+{% block scripts %}
+    <script src="/cholewp1/webapp/js/login.js"></script>
+{% endblock %}

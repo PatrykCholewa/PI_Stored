@@ -1,15 +1,10 @@
 from functools import wraps
 from six.moves.urllib.parse import urlencode
 from authlib.flask.client import OAuth
-from flask import Flask, request, session, flash, redirect, url_for
+from flask import Flask, request, session, flash, redirect
 from werkzeug.utils import secure_filename
 
-from src import ResourceManager, UserManager, FileManager, ResponseManager, CookieManager, ConfigManager
-
-__page_login = "login.html"
-__page_register = "register.html"
-__page_list = "list.html"
-__page_add_file = "add_file.html"
+from src import ResourceManager, SessionManager, FileManager, ResponseManager, CookieManager, ConfigManager
 
 __redirect_link_prefix = ConfigManager.get_config("DL_REDIRECT_LINK_PREFIX")
 __is_app_secured = ConfigManager.get_config("APP_SECURE")
@@ -50,7 +45,7 @@ def requires_auth(f):
         if 'sid' not in session:
             return ResponseManager.create_response_401()
 
-        valid = UserManager.check_session_valid(session['username'], session['sid'])
+        valid = SessionManager.check_session_valid(session['username'], session['sid'])
         if valid:
             return f(*args, **kwargs)
         else:
@@ -61,7 +56,7 @@ def requires_auth(f):
 
 @app.route('/cholewp1/webapp/')
 def index():
-    return ResourceManager.send_html(__page_login)
+    return ResourceManager.send_html_login()
 
 
 @app.route('/cholewp1/webapp/login')
@@ -75,7 +70,8 @@ def send_html_list(user):
     if user != session['username']:
         return ResponseManager.create_response_400()
 
-    return ResourceManager.send_html(__page_list)
+    response = ResourceManager.send_html_list(session['username'], FileManager.get_user_file_names(user))
+    return CookieManager.set_file_cookie_to_response(response, FileManager.get_user_file_ids(user))
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/add_file')
@@ -84,12 +80,7 @@ def send_html_add_file(user):
     if user != session['username']:
         return ResponseManager.create_response_400()
 
-    return ResourceManager.send_html(__page_add_file)
-
-
-@app.route('/cholewp1/webapp/template/<path:path>')
-def send_html_template(path):
-    return ResourceManager.send_html_template(path)
+    return ResourceManager.send_html_add_file(session['username'])
 
 
 @app.route('/cholewp1/webapp/css/<path:path>')
@@ -107,14 +98,9 @@ def send_img(path):
     return ResourceManager.send_img(path)
 
 
-@app.route('/cholewp1/webapp/user/<string:user>/file/list', methods=['GET'])
-@requires_auth
-def get_user_files(user):
-    if user != session['username']:
-        return ResponseManager.create_response_400()
-
-    response = ResponseManager.create_response_200(FileManager.get_user_file_names(user), "application/json")
-    return CookieManager.set_file_cookie_to_response(response, FileManager.get_user_file_ids(user))
+@app.route('/cholewp1/webapp/manifest/<path:path>')
+def send_manifest(path):
+    return ResourceManager.send_manifest(path)
 
 
 @app.route('/cholewp1/webapp/user/<string:user>/file/add', methods=['POST'])
@@ -203,9 +189,9 @@ def callback_handling():
     username = userinfo['name']
 
     if 'sid' in session:
-        UserManager.delete_session(session['sid'])
+        SessionManager.delete_session(session['sid'])
 
-    sid = UserManager.create_new_session(username)
+    sid = SessionManager.create_new_session(username)
     session['username'] = username
     session['sid'] = sid
 
@@ -215,7 +201,7 @@ def callback_handling():
 @app.route('/cholewp1/webapp/logout/', methods=['GET', 'POST'])
 def logout():
     if 'sid' in session:
-        UserManager.delete_session(session['sid'])
+        SessionManager.delete_session(session['sid'])
 
     session.clear()
 

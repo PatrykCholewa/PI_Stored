@@ -88,23 +88,28 @@ def get_user_file_ids(user):
 
 def get_user_file_names(user):
     ids = get_user_file_ids(user)
-    files = __get_file_names_by_ids(ids)
 
-    ret = '{\"files\":['
-    flag = False
-    for file_id in files.keys():
-        if flag:
-            ret = ret + ","
-        else:
-            flag = True
+    files = []
 
-        ret = ret + '[ "'
-        ret = ret + file_id + '", "'
-        ret = ret + files[file_id] + '", "'
-        ret = ret + get_file_sharelink(file_id) + '" ]'
+    for __id in ids:
+        name = get_file_name_by_id(__id)
+        if name is None:
+            __db.hdel(__db_table_file, __id)
+            continue
 
-    ret = ret + "]}"
-    return ret
+        download = "../../../dl/file/" + __id + "/name/" + name
+        sharelink = get_file_sharelink(__id)
+
+        file = {
+            'id': __id,
+            'name': name,
+            'download': download,
+            'sharelink': sharelink
+        }
+
+        files.append(file)
+
+    return files
 
 
 def is_file_shared(file_id):

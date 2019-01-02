@@ -1,8 +1,8 @@
 from datetime import datetime, timedelta
+from src import ConfigManager
+
 
 import jwt
-
-from src import ConfigManager
 
 dl_secret = ConfigManager.get_config("DL_COOKIE_SECRET_KEY")
 event_secret = ConfigManager.get_config("EVENT_COOKIE_SECRET_KEY")
