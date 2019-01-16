@@ -21,7 +21,63 @@
 
 ![Widok Mały](screenshots/app-view/small.PNG)
 
-### 2. Audyt aplikacji
+### 2. Kompilacja SCSS
+
+Większość arkuszy CSS jest generowana z __Bootstrapa__ za pomocą skróconego arkusza głównego SCSS. 
+
+```scss
+@import "functions";
+@import "variables";
+@import "mixins";
+@import "root";
+@import "reboot";
+@import "type";
+@import "images";
+@import "grid";
+@import "tables";
+@import "forms";
+@import "buttons";
+@import "transitions";
+@import "dropdown";
+@import "button-group";
+@import "input-group";
+@import "custom-forms";
+@import "nav";
+@import "navbar";
+@import "card";
+@import "breadcrumb";
+@import "jumbotron";
+@import "alert";
+@import "media";
+@import "list-group";
+@import "modal";
+@import "utilities";
+```
+
+Dzięki wyrzuceniu modułów jak np. `_badge.scss` udało się zmniejszyć pierwotny rozmiar pliku CSS z ~180KB do ~148KB. Własne pliki SCSS zostały zaś ograniczone do koniecznego minimum.
+
+```scss
+#body-container {
+  max-width: 750px;
+}
+
+.upload-drop-zone {
+  color: #ccc;
+  border: 2px dashed #ccc;
+  text-align: center;
+}
+.upload-drop-zone.drop {
+  color: #222;
+  border-color: #222;
+}
+
+.nav-logged-text {
+  color: white;
+  padding-right: 1em;
+```
+
+
+### 3. Audyt aplikacji
 
 Pominąłem audyt dotyczący aplikacji progresywnych, gdyż niniejsza aplikacja opierająca się o pobieranie i wgrywanie plików z założenia nie będzie działać offline. 
 
