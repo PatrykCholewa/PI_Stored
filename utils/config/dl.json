@@ -2,5 +2,6 @@
 	"APP_APPLICATION_ROOT": "/cholewp1/webapp/",
 	"APP_SECRET_KEY": "45wh/;ehww4uygkuhjv[$:VHW]",
 	"APP_SECURE": true,
-	"DL_COOKIE_SECRET_KEY": "soinGERG#25gappk2GWG32$#^ azg"
+	"DL_COOKIE_SECRET_KEY": "soinGERG#25gappk2GWG32$#^ azg",
+	"DL_RABBIT_ID": "cholewp1"
 }
