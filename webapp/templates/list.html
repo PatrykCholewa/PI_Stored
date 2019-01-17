@@ -9,14 +9,26 @@
     <div class="list-group">
         {%  for file in files %}
             <div class="list-group-item">
-                <a download href="{{ file.download|safe }}" class="btn-block">
-                    <button type="button"
-                            class="btn btn-outline-primary btn-lg btn-block"
-                            aria-label="Left Align">
-                        <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
-                        <b>{{ file.name }}</b>
-                    </button>
-                </a>
+                <div class="input-group">
+                    <span class="col-lg-4">
+                        {% if file.name.split('.')[-1] in ['png', 'jpeg', 'jpg'] %}
+                            <img src="/cholewp1/dl/file/{{ file.id }}/thumbnail"
+                             width="64" height="64"
+                             class="img-thumbnail"
+                             alt="thumbnail {{ file.id }}">
+                        {% endif %}
+                    </span>
+                <span class="col-lg-8">
+                    <a download href="{{ file.download|safe }}" class="btn-block">
+                        <button type="button"
+                                class="btn btn-outline-primary btn-lg btn-block"
+                                aria-label="Left Align">
+                            <span class="glyphicon glyphicon-download" aria-hidden="true"></span>
+                            <b>{{ file.name }}</b>
+                        </button>
+                    </a>
+                </span>
+                </div>
                 <div class="input-group">
                     <div class="col-lg-6">
                         <label for="sharelink-{{ file.id }}" class="d-none">Sharelink</label>
