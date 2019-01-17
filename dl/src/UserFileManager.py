@@ -14,7 +14,8 @@ __file_ext = ["png", "jpg", "jpeg"]
 
 def get_thumbnail(file_id):
     return flask.send_file(
-        filename_or_fp=__thumbnails_dir + file_id
+        filename_or_fp=__thumbnails_dir + file_id,
+        as_attachment=True
     )
 
 
