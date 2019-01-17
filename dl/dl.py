@@ -10,10 +10,6 @@ app.config.update(
 )
 
 
-def validate_user_cookie(cookie, user):
-    return cookie is not None and CookieManager.validate_user_jwt(cookie, user)
-
-
 def validate_file_cookie(cookie, file):
     return cookie is not None and CookieManager.validate_file_by_jwt(cookie, file)
 
@@ -26,6 +22,18 @@ def get_file(file_id, filename):
 
     try:
         return UserFileManager.get_file(file_id, filename)
+    except FileNotFoundError:
+        return ResponseManager.create_response_404()
+
+
+@app.route('/cholewp1/dl/file/<string:file_id>/thumbnail', methods=['GET'])
+def get_thumbnail(file_id):
+    cookie = request.cookies.get("file")
+    if not validate_file_cookie(cookie, file_id):
+        return ResponseManager.create_response_401()
+
+    try:
+        return UserFileManager.get_thumbnail(file_id)
     except FileNotFoundError:
         return ResponseManager.create_response_404()
 
