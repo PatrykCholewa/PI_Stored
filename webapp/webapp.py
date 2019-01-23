@@ -165,16 +165,6 @@ def get_shared_file(file_id):
         return ResponseManager.create_response_403()
 
 
-@app.route('/cholewp1/webapp/user/<string:user>/events/cookie', methods=['GET'])
-@requires_auth
-def get_events_cookie(user):
-    if user != session['username']:
-        return ResponseManager.create_response_400()
-
-    resp = ResponseManager.create_response_200("OK", "text/plain")
-    return CookieManager.set_events_jwt_to_response(resp, user)
-
-
 @app.route('/cholewp1/webapp/oauth')
 def login():
     return auth0.authorize_redirect(redirect_uri=__login_callback,
