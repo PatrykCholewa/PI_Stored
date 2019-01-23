@@ -81,25 +81,10 @@ function confirm_sending_file(fileJson){
     })
     .then(response => {
         if( response.ok ){
-            notify_file_uploaded(fileJson['filename']);
+            window.location = "list";
         } else {
             console.log(response);
             alert("Failed!");
         }
-    });
-}
-
-function notify_file_uploaded(filename){
-    fetch("events/cookie", {
-        method: "GET",
-        credentials: 'include'
-    }).then( response => {
-        fetch(event_host + "post/user/" + userParam, {
-            method: "POST",
-            credentials: 'include',
-            body: filename
-        }).then(response => {
-            window.location = "list";
-        });
     });
 }
