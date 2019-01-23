@@ -1,24 +1,13 @@
-#!/usr/bin/env python
-import pika
+import os
 
 from src import ConfigManager
 
 __thumbnails_dir = "db/thumbnails/"
+__users_dir = "db/userfiles/"
 
 __my_rabbit_id = ConfigManager.get_config("DL_RABBIT_ID")
 
 
-def send_thumbnail_request(body):
-    connection = pika.BlockingConnection(pika.ConnectionParameters(host='localhost'))
-    channel = connection.channel()
-
-    channel.exchange_declare(exchange=__my_rabbit_id, durable=True)
-    channel.basic_publish(__my_rabbit_id, __my_rabbit_id, body)
-
-    print(" [x] Sent '{}'".format(body))
-    connection.close()
-
-
 def create_thumbnail(file_id):
-    send_thumbnail_request(file_id)
+    os.system("/usr/bin/convert " + __users_dir + file_id + " -resize 64x64 " + __thumbnails_dir + file_id)
     return None
